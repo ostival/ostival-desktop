@@ -1,0 +1,102 @@
+% !TEX root = OstivalDoc.tex
+\documentclass[12pt,oneside,a4paper]{book}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{graphicx}
+\usepackage{amsmath, amssymb}
+\usepackage{hyperref}
+\usepackage[a4paper,margin=2.5cm]{geometry}
+\usepackage{eso-pic}
+\usepackage{contour}
+\contourlength{0.2em}
+
+\newcommand\BackgroundPic{
+    \put(0,0){
+        \parbox[b][\paperheight]{\paperwidth}{
+            \vfill
+            \centering
+            \includegraphics[width=\paperwidth,height=\paperheight]{figures/ostival-doc-cover.jpg}
+            \vfill
+        }
+    }
+}
+
+\begin{document}
+
+\begin{titlepage}
+    \AddToShipoutPicture*{\BackgroundPic}
+    \centering
+
+    \color{white}
+
+    \vspace*{4cm}
+
+    {\Huge\bfseries \contour{black}{OSTIVAL} \par}
+    \vspace{0.5cm}
+    {\Large\itshape \contour{black}{Open Silicon Technology Integration} \par}
+    {\Large\itshape \contour{black}{For} \par}
+    {\Large\itshape \contour{black}{VLSI ASIC And LOGIC} \par}
+    \vspace{1.5cm}
+    \vfill
+    {\Large \contour{black}{Team Ostival} \par}
+    \vspace{0.3cm}
+    {\normalsize\contour{black}{hello@ostival.org} \par}
+
+    \vfill
+
+\end{titlepage}
+
+\frontmatter
+\tableofcontents
+\listoffigures
+\listoftables
+
+\chapter*{Preface}
+\addcontentsline{toc}{chapter}{Preface}
+
+\vfill
+Happy Designing!\\
+Team Ostival\\
+hello@ostival.org
+
+\chapter*{Purpose Of The Manual}
+
+
+\vfill
+Happy Designing!\\
+Team Ostival\\
+hello@ostival.org
+
+\chapter*{Vision and Philosophy}
+
+
+\vfill
+Happy Designing!\\
+Team Ostival\\
+hello@ostival.org
+
+\chapter*{Target Audience}
+
+\vfill
+Happy Designing!\\
+Team Ostival\\
+hello@ostival.org
+
+\chapter*{Acknowledgments}
+
+\vfill
+Happy Designing!\\
+Team Ostival\\
+hello@ostival.org
+
+\mainmatter
+
+\chapter{Introduction}
+
+\backmatter
+\bibliographystyle{plain} 
+\bibliography{references} 
+
+\end{document}

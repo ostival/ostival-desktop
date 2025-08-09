@@ -1,0 +1,7 @@
+.vscode
+build
+docs/*
+!docs/figures
+!docs/OstivalDoc.tex
+!docs/OstivalDoc.pdf
+!docs/references.bib
