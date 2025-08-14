@@ -10,6 +10,7 @@ Team Ostival (hello@ostival.org)
 #include <QDebug>
 #include <QCommandLineParser>
 #include "config.h"
+#include "MainGUIWindow.h"
 
 
 int main(int argc, char *argv[]) {
@@ -32,6 +33,12 @@ int main(int argc, char *argv[]) {
     parser.process(app);
     
     qDebug() << "Ostival Desktop Started";
+
+    MainGUIWindow window;
+
+    window.setWindowTitle("Ostival Desktop");
+
+    window.showMaximized();
 
     return app.exec();
 }

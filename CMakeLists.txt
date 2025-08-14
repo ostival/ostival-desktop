@@ -9,7 +9,15 @@ set(CMAKE_AUTOMOC ON)
 
 add_executable(Ostival
     src/OstivalMain.cpp
+    src/FileMenuBuilder.cpp
+    src/ToolBarBuilder.cpp
+    src/LeftDockBuilder.cpp
+    src/RightDockBuilder.cpp
+    src/CentralWidget.cpp
+    src/StatusBarBuilder.cpp
+    src/MainGUIWindow.cpp
     src/config.cpp
+    src/SettingsDialog.cpp
 )
 
 target_include_directories(Ostival PRIVATE ${CMAKE_SOURCE_DIR})
