@@ -18,6 +18,7 @@ add_executable(Ostival
     src/MainGUIWindow.cpp
     src/config.cpp
     src/SettingsDialog.cpp
+    src/SyntaxHighlighter.cpp
 )
 
 target_include_directories(Ostival PRIVATE ${CMAKE_SOURCE_DIR})

@@ -1,28 +1,31 @@
 /*
 ================================
-All central widget logics goes here
+Central Widget (Currently Text Editor)
 --------------------------------
 Coded by:
 Team Ostival (hello@ostival.org)
 ---------------------------------
 */
-#include <QPushButton>
 #include <QVBoxLayout>
-#include <QHBoxLayout>
+#include <QFont>
 #include "CentralWidget.h"
-
+#include "SyntaxHighlighter.h"
 
 CentralWidget::CentralWidget(QWidget *parent)
     : QWidget(parent) {
 
-    auto *addButton = new QPushButton("Button 1");
-    auto *subtractButton = new QPushButton("Button 2");
-    auto *multiplyButton = new QPushButton("Button 3");
+    OstivalTextEdit = new QTextEdit(this);
+    
+    OstivalTextEdit->setPlaceholderText("Enter your text here...");
 
-    auto *buttonLayout = new QHBoxLayout;
+    OstivalTextEdit->setFont(QFont("Courier", 16));
+
+    OstivalTextEdit->setStyleSheet("background-color: #282A36; color: #F8F8F2;");
+
+    new SyntaxHighlighter(OstivalTextEdit->document());
 
     auto *mainLayout = new QVBoxLayout;
+    mainLayout->addWidget(OstivalTextEdit);
 
     setLayout(mainLayout);
-
 }

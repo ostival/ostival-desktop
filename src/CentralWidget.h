@@ -1,6 +1,6 @@
 /*
 ================================
-All central widget logics goes here
+Central Widget (Currently Text Editor)
 --------------------------------
 Coded by:
 Team Ostival (hello@ostival.org)
@@ -10,16 +10,17 @@ Team Ostival (hello@ostival.org)
 #define CENTRALWIDGET_H
 
 #include <QWidget>
+#include <QTextEdit>
 
-class InputPanel;
-class ResultPanel;
-class QPushButton;
-
-class CentralWidget : public QWidget {
+class CentralWidget : public QWidget
+{
     Q_OBJECT
 
 public:
     explicit CentralWidget(QWidget *parent = nullptr);
+
+private:
+    QTextEdit *OstivalTextEdit;
 
 };
 
