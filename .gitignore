@@ -2,6 +2,7 @@
 build
 docs/*
 !docs/figures
+!docs/chapters
 !docs/OstivalDoc.tex
 !docs/OstivalDoc.pdf
 !docs/references.bib
