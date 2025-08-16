@@ -30,7 +30,7 @@ Create a folder named **build** and cd to build
 
 Then run the commands to build the executable file given below:
 ### Windows
-    cmake .. -DCMAKE_PREFIX_PATH="$HOME/Qt/6.9.1/gcc_64"
+    cmake .. -G "MinGW Makefiles" -DCMAKE_PREFIX_PATH="C:/Qt/6.9.1/mingw_64/lib/cmake"
 
     make
 
