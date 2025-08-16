@@ -11,6 +11,7 @@ Team Ostival (hello@ostival.org)
 #include <QCommandLineParser>
 #include "config.h"
 #include "MainGUIWindow.h"
+#include "InitialDialog.h"
 
 
 int main(int argc, char *argv[]) {
@@ -34,11 +35,21 @@ int main(int argc, char *argv[]) {
     
     qDebug() << "Ostival Desktop Started";
 
-    MainGUIWindow window;
+    InitialDialog dialog;
 
-    window.setWindowTitle("Ostival Desktop");
+    if (dialog.exec() == QDialog::Accepted)
+    {
+        projectName = dialog.getProjectName();
+        projectPath = dialog.getProjectPath();
 
-    window.showMaximized();
+        MainGUIWindow window;
+        window.setWindowTitle("Ostival Desktop");
+        window.showMaximized();
 
-    return app.exec();
+        qDebug() << projectPath;
+
+        return app.exec();
+    }
+
+    return 0;
 }

@@ -8,3 +8,6 @@ Team Ostival (hello@ostival.org)
 */
 
 #include "config.h"
+
+QString projectName = "";
+QString projectPath = "";
