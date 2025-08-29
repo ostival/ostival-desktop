@@ -6,7 +6,7 @@ Coded by:
 Team Ostival (hello@ostival.org)
 ---------------------------------
 */
-#include <QLabel>
+
 #include <QPushButton>
 #include <QFormLayout>
 #include <QHBoxLayout>
@@ -15,8 +15,8 @@ Team Ostival (hello@ostival.org)
 #include <QMessageBox>
 #include <QDir>
 #include <QRegularExpression>
-#include "InitialDialog.h"
 #include <QDebug>
+#include "InitialDialog.h"
 
 
 InitialDialog::InitialDialog(QWidget *parent) : QDialog(parent)

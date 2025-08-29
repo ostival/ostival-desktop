@@ -6,6 +6,7 @@ Coded by:
 Team Ostival (hello@ostival.org)
 ---------------------------------
 */
+
 #include <QVBoxLayout>
 #include <QFont>
 #include "CentralWidget.h"
@@ -16,7 +17,7 @@ CentralWidget::CentralWidget(QWidget *parent)
 
     OstivalTextEdit = new QTextEdit(this);
     
-    OstivalTextEdit->setPlaceholderText("Enter your text here...");
+    OstivalTextEdit->setPlaceholderText("Ostival text editor...");
 
     OstivalTextEdit->setFont(QFont("Courier", 16));
 

@@ -6,6 +6,7 @@ Coded by:
 Team Ostival (hello@ostival.org)
 ---------------------------------
 */
+
 #include <QMenu>
 #include <QAction>
 #include <QFileDialog>
@@ -15,9 +16,9 @@ Team Ostival (hello@ostival.org)
 #include "config.h"
 
 FileMenuBuilder::FileMenuBuilder(QMenuBar *menuBar, QWidget *parentWindow, QObject *parent)
-    : QObject(parent), m_menuBar(menuBar), m_parentWindow(parentWindow)
+    : QObject(parent), OstivalmenuBar(menuBar), OstivalparentWindow(parentWindow)
 {
-    QMenu *fileMenu = m_menuBar->addMenu("File");
+    QMenu *fileMenu = OstivalmenuBar->addMenu("File");
 
     fileMenu->addSeparator();
 
@@ -37,49 +38,49 @@ FileMenuBuilder::FileMenuBuilder(QMenuBar *menuBar, QWidget *parentWindow, QObje
     fileMenu->addSeparator();
 
     QAction *exitAction = fileMenu->addAction("Exit");
-    connect(exitAction, &QAction::triggered, m_parentWindow, &QWidget::close);
+    connect(exitAction, &QAction::triggered, OstivalparentWindow, &QWidget::close);
 
     // --- Edit Menu ---
-    QMenu *editMenu = m_menuBar->addMenu("Edit");
+    QMenu *editMenu = OstivalmenuBar->addMenu("Edit");
     QAction *cutAction = editMenu->addAction("Cut");
     fileMenu->addSeparator();
     QAction * copyAction = editMenu->addAction("Copy");
 
     // --- Run Flow Menu ---
-    QMenu *flowMenu = m_menuBar->addMenu("Run");
+    QMenu *flowMenu = OstivalmenuBar->addMenu("Run");
     QAction *compileAction = flowMenu->addAction("Compile");
 
     // --- Tools Menu ---
-    QMenu *toolsMenu = m_menuBar->addMenu("Tools");
+    QMenu *toolsMenu = OstivalmenuBar->addMenu("Tools");
     QAction *settingTool = toolsMenu->addAction("Ostival Settings");
     connect(settingTool, &QAction::triggered, this, &FileMenuBuilder::openSettingsDialog);
 
     // --- Reports Menu ---
-    QMenu *reportsMenu = m_menuBar->addMenu("Reports");
+    QMenu *reportsMenu = OstivalmenuBar->addMenu("Reports");
     QAction *synthesisReportAction = reportsMenu->addAction("Get Synthesis Report");
 
     // --- View Menu ---
-    QMenu *viewMenu = m_menuBar->addMenu("View");
+    QMenu *viewMenu = OstivalmenuBar->addMenu("View");
     QAction *exampleView = viewMenu->addAction("Something");
 
     // --- Help Menu ---
-    QMenu *helpMenu = m_menuBar->addMenu("Help");
+    QMenu *helpMenu = OstivalmenuBar->addMenu("Help");
     QAction *aboutAction = helpMenu->addAction("About");
     connect(aboutAction, &QAction::triggered, this, [this]() {
-        QMessageBox::about(m_parentWindow, "About Ostival", ABOUT_MESSAGE);
+        QMessageBox::about(OstivalparentWindow, "About Ostival", ABOUT_MESSAGE);
     });
 }
 
 void FileMenuBuilder::onOpenFile()
 {
-    QString filePath = QFileDialog::getOpenFileName(m_parentWindow, "Select a file");
+    QString filePath = QFileDialog::getOpenFileName(OstivalparentWindow, "Select a file");
     if (!filePath.isEmpty())
         qDebug() << "Selected file:" << filePath;
 }
 
 void FileMenuBuilder::onOpenFolder()
 {
-    QString folderPath = QFileDialog::getExistingDirectory(m_parentWindow, "Select a folder");
+    QString folderPath = QFileDialog::getExistingDirectory(OstivalparentWindow, "Select a folder");
     if (!folderPath.isEmpty())
         qDebug() << "Selected folder:" << folderPath;
 }
@@ -91,6 +92,6 @@ void FileMenuBuilder::handleClear()
 
 void FileMenuBuilder::openSettingsDialog()
 {
-    SettingsDialog dialog(m_parentWindow);
+    SettingsDialog dialog(OstivalparentWindow);
     dialog.exec();
 }

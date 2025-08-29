@@ -6,6 +6,7 @@ Coded by:
 Team Ostival (hello@ostival.org)
 ---------------------------------
 */
+
 #ifndef TOOLBARBUILDER_H
 #define TOOLBARBUILDER_H
 
@@ -22,8 +23,8 @@ public:
     ToolBarBuilder(QMainWindow *mainWindow, QObject *parent = nullptr);
 
 private:
-    QMainWindow *m_mainWindow;
-    MainGUIWindow *m_guiWindow;
+    QMainWindow *OstivalmainWindow;
+    MainGUIWindow *OstivalguiWindow;
 };
 
 #endif

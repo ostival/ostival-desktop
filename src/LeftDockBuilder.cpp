@@ -6,20 +6,21 @@ Coded by:
 Team Ostival (hello@ostival.org)
 ---------------------------------
 */
+
 #include <QLabel>
 #include <QMainWindow>
 #include "LeftDockBuilder.h"
 
 LeftDockBuilder::LeftDockBuilder(QMainWindow *mainWindow, QObject *parent)
-    : QObject(parent), m_mainWindow(mainWindow)
+    : QObject(parent), OstivalmainWindow(mainWindow)
 {
-    m_leftDock = new QDockWidget("Left Panel", m_mainWindow);
-    m_mainWindow->addDockWidget(Qt::LeftDockWidgetArea, m_leftDock);
+    OstivalleftDock = new QDockWidget("Left Panel", OstivalmainWindow);
+    OstivalmainWindow->addDockWidget(Qt::LeftDockWidgetArea, OstivalleftDock);
 
-    QLabel *leftContent = new QLabel("<h3>History</h3><p>No history yet.</p>", m_leftDock);
+    QLabel *leftContent = new QLabel("<h3>History</h3><p>No history yet.</p>", OstivalleftDock);
     leftContent->setAlignment(Qt::AlignTop | Qt::AlignHCenter);
     leftContent->setWordWrap(true);
 
-    m_leftDock->setWidget(leftContent);
-    m_leftDock->setFeatures(QDockWidget::DockWidgetClosable | QDockWidget::DockWidgetMovable);
+    OstivalleftDock->setWidget(leftContent);
+    OstivalleftDock->setFeatures(QDockWidget::DockWidgetClosable | QDockWidget::DockWidgetMovable);
 }

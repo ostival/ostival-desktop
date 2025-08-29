@@ -6,6 +6,7 @@ Coded by:
 Team Ostival (hello@ostival.org)
 ---------------------------------
 */
+
 #include "SettingsDialog.h"
 
 SettingsDialog::SettingsDialog(QWidget *parent)
@@ -15,7 +16,7 @@ SettingsDialog::SettingsDialog(QWidget *parent)
     setFixedSize(300, 150);
 
     QVBoxLayout *layout = new QVBoxLayout(this);
-    QLabel *label = new QLabel("Settings go here", this);
+    QLabel *label = new QLabel("This dialog is for application settings", this);
     layout->addWidget(label);
 
     setLayout(layout);

@@ -6,6 +6,7 @@ Coded by:
 Team Ostival (hello@ostival.org)
 ---------------------------------
 */
+
 #ifndef CENTRALWIDGET_H
 #define CENTRALWIDGET_H
 

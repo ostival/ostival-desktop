@@ -6,6 +6,7 @@ Coded by:
 Team Ostival (hello@ostival.org)
 ---------------------------------
 */
+
 #ifndef SETTINGSDIALOG_H
 #define SETTINGSDIALOG_H
 

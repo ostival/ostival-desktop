@@ -1,3 +1,10 @@
+# ================================
+# CMake File for compilation
+# --------------------------------
+# Coded by:
+# Team Ostival (hello@ostival.org)
+# ---------------------------------
+
 cmake_minimum_required(VERSION 3.16)
 project(Ostival)
 
@@ -9,14 +16,15 @@ set(CMAKE_AUTOMOC ON)
 
 add_executable(Ostival
     src/OstivalMain.cpp
+    src/config.cpp
+    src/MainGUIWindow.cpp
+    src/ToolCommunicator.cpp
     src/FileMenuBuilder.cpp
     src/ToolBarBuilder.cpp
     src/LeftDockBuilder.cpp
     src/RightDockBuilder.cpp
     src/CentralWidget.cpp
     src/StatusBarBuilder.cpp
-    src/MainGUIWindow.cpp
-    src/config.cpp
     src/SettingsDialog.cpp
     src/SyntaxHighlighter.cpp
     src/InitialDialog.cpp

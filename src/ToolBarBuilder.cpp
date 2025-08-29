@@ -6,23 +6,24 @@ Coded by:
 Team Ostival (hello@ostival.org)
 ---------------------------------
 */
+
 #include <QAction>
 #include "ToolBarBuilder.h"
 #include "MainGUIWindow.h"
 
 ToolBarBuilder::ToolBarBuilder(QMainWindow *mainWindow, QObject *parent)
-    : QObject(parent), m_mainWindow(mainWindow)
+    : QObject(parent), OstivalmainWindow(mainWindow)
 {
-    m_guiWindow = qobject_cast<MainGUIWindow *>(mainWindow);
+    OstivalguiWindow = qobject_cast<MainGUIWindow *>(mainWindow);
 
-    if (!m_guiWindow)
+    if (!OstivalguiWindow)
         return;
 
-    QToolBar *toolBar = new QToolBar("Main Toolbar", m_mainWindow);
-    m_mainWindow->addToolBar(Qt::TopToolBarArea, toolBar);
+    QToolBar *toolBar = new QToolBar("Main Toolbar", OstivalmainWindow);
+    OstivalmainWindow->addToolBar(Qt::TopToolBarArea, toolBar);
 
-    QAction *addToolAction = new QAction("Action 1", m_mainWindow);
-    QAction *subtractToolAction = new QAction("Action 2", m_mainWindow);
-    QAction *multiplyToolAction = new QAction("Action 3", m_mainWindow);
+    QAction *addToolAction = new QAction("Action 1", OstivalmainWindow);
+    QAction *subtractToolAction = new QAction("Action 2", OstivalmainWindow);
+    QAction *multiplyToolAction = new QAction("Action 3", OstivalmainWindow);
 
 }

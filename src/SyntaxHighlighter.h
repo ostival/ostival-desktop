@@ -6,6 +6,7 @@ Coded by:
 Team Ostival (hello@ostival.org)
 ---------------------------------
 */
+
 #ifndef SYNTAXHIGHLIGHTER_H
 #define SYNTAXHIGHLIGHTER_H
 

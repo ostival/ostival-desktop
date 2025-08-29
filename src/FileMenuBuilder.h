@@ -6,6 +6,7 @@ Coded by:
 Team Ostival (hello@ostival.org)
 ---------------------------------
 */
+
 #ifndef FILEMENUBUILDER_H
 #define FILEMENUBUILDER_H
 
@@ -27,8 +28,8 @@ private slots:
     void openSettingsDialog();
 
 private:
-    QMenuBar *m_menuBar;
-    QWidget *m_parentWindow;
+    QMenuBar *OstivalmenuBar;
+    QWidget *OstivalparentWindow;
 };
 
 #endif

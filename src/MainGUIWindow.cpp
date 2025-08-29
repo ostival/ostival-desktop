@@ -6,18 +6,7 @@ Coded by:
 Team Ostival (hello@ostival.org)
 ---------------------------------
 */
-#include <QWidget>
-#include <QHBoxLayout>
-#include <QVBoxLayout>
-#include <QPushButton>
-#include <QMenuBar>
-#include <QMenu>
-#include <QAction>
-#include <QToolBar>
-#include <QDockWidget>
-#include <QLabel>
-#include <QString>
-#include <QMessageBox>
+
 #include "MainGUIWindow.h"
 #include "FileMenuBuilder.h"
 #include "ToolBarBuilder.h"
@@ -44,9 +33,9 @@ MainGUIWindow::MainGUIWindow(QWidget *parent)
     new LeftDockBuilder(this, this);
 
     // Right Dock Panel
-    m_rightDockBuilder = new RightDockBuilder(this, this);
+    OstivalrightDockBuilder = new RightDockBuilder(this, this);
 
     // Status Bar
-    m_statusBarBuilder = new StatusBarBuilder(this);
-    m_statusBarBuilder->getStatusBar()->showMessage("Ready!", 3000);
+    OstivalstatusBarBuilder = new StatusBarBuilder(this);
+    OstivalstatusBarBuilder->getStatusBar()->showMessage("Ready!", 1200);
 }

@@ -6,6 +6,7 @@ Coded by:
 Team Ostival (hello@ostival.org)
 ---------------------------------
 */
+
 #ifndef LEFTDOCKBUILDER_H
 #define LEFTDOCKBUILDER_H
 
@@ -22,8 +23,8 @@ public:
     explicit LeftDockBuilder(QMainWindow *mainWindow, QObject *parent = nullptr);
 
 private:
-    QMainWindow *m_mainWindow;
-    QDockWidget *m_leftDock;
+    QMainWindow *OstivalmainWindow;
+    QDockWidget *OstivalleftDock;
 };
 
 #endif

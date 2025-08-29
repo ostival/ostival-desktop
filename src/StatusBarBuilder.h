@@ -6,6 +6,7 @@ Coded by:
 Team Ostival (hello@ostival.org)
 ---------------------------------
 */
+
 #ifndef STATUSBARBUILDER_H
 #define STATUSBARBUILDER_H
 
@@ -23,7 +24,7 @@ public:
     QStatusBar *getStatusBar() const;
 
 private:
-    QStatusBar *m_statusBar;
+    QStatusBar *OstivalStatusBar;
 };
 
 #endif

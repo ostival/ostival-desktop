@@ -6,6 +6,7 @@ Coded by:
 Team Ostival (hello@ostival.org)
 ---------------------------------
 */
+
 #ifndef RIGHTDOCKBUILDER_H
 #define RIGHTDOCKBUILDER_H
 
@@ -25,8 +26,8 @@ public:
     void showDock();
 
 private:
-    QMainWindow *m_mainWindow;
-    QDockWidget *m_rightDock;
+    QMainWindow *OstivalmainWindow;
+    QDockWidget *OstivalrightDock;
 };
 
 #endif

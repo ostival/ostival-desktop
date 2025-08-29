@@ -6,6 +6,7 @@ Coded by:
 Team Ostival (hello@ostival.org)
 ---------------------------------
 */
+
 #ifndef INITIALDIALOG_H
 #define INITIALDIALOG_H
 

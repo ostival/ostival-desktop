@@ -6,6 +6,7 @@ Coded by:
 Team Ostival (hello@ostival.org)
 ---------------------------------
 */
+
 #include "SyntaxHighlighter.h"
 
 SyntaxHighlighter::SyntaxHighlighter(QTextDocument *parent)

@@ -6,32 +6,33 @@ Coded by:
 Team Ostival (hello@ostival.org)
 ---------------------------------
 */
+
 #include <QLabel>
 #include <QMainWindow>
 #include "RightDockBuilder.h"
 
 RightDockBuilder::RightDockBuilder(QMainWindow *mainWindow, QObject *parent)
-    : QObject(parent), m_mainWindow(mainWindow)
+    : QObject(parent), OstivalmainWindow(mainWindow)
 {
-    m_rightDock = new QDockWidget("Right Panel", m_mainWindow);
-    m_mainWindow->addDockWidget(Qt::RightDockWidgetArea, m_rightDock);
+    OstivalrightDock = new QDockWidget("Right Panel", OstivalmainWindow);
+    OstivalmainWindow->addDockWidget(Qt::RightDockWidgetArea, OstivalrightDock);
 
-    QLabel *rightContent = new QLabel("<h3>Info</h3><p>Info will display here.</p>", m_rightDock);
+    QLabel *rightContent = new QLabel("<h3>Info</h3><p>Info will display here.</p>", OstivalrightDock);
     rightContent->setAlignment(Qt::AlignTop | Qt::AlignHCenter);
     rightContent->setWordWrap(true);
 
-    m_rightDock->setWidget(rightContent);
-    m_rightDock->setFeatures(QDockWidget::DockWidgetClosable | QDockWidget::DockWidgetMovable);
+    OstivalrightDock->setWidget(rightContent);
+    OstivalrightDock->setFeatures(QDockWidget::DockWidgetClosable | QDockWidget::DockWidgetMovable);
 }
 
 void RightDockBuilder::hideDock()
 {
-    if (m_rightDock)
-        m_rightDock->hide();
+    if (OstivalrightDock)
+        OstivalrightDock->hide();
 }
 
 void RightDockBuilder::showDock()
 {
-    if (m_rightDock)
-        m_rightDock->show();
+    if (OstivalrightDock)
+        OstivalrightDock->show();
 }
