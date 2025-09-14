@@ -15,6 +15,7 @@ Team Ostival (hello@ostival.org)
 #include "ToolCommunicator.h"
 #include "MainGUIWindow.h"
 #include "InitialDialog.h"
+#include "TempFiles.h"
 
 int main(int argc, char *argv[]) {
     
@@ -58,6 +59,18 @@ int main(int argc, char *argv[]) {
     GUI application if there is no CLI command. 
     */
     qDebug() << "Ostival Desktop Started";
+
+    /*
+    Ensure temp file exsists or not. If not, create one so that we can use it for other purposes.
+    Like, check the last project. No need to open initial dialog again and again.
+    */
+    TempFiles::ensureTempFileExists();
+
+    QString projectName, projectPath;
+    if (TempFiles::readTempFile(projectName, projectPath)) {
+        qDebug() << "Project Name:" << projectName;
+        qDebug() << "Project Path:" << projectPath;
+    }
 
     /*
     Initial dialog box is added so that user can choose project path.
