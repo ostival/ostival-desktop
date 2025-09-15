@@ -9,8 +9,10 @@
 Our motivation to start this project is:
 
 1. **Democratizing Hardware:** We believe chip design should be accessible to everyone. This project aims to break down the barriers of expensive, proprietary EDA tools by providing a free, open-source flow from Verilog to GDSII.
-2. **Modernizing EDA:** We're bringing a modern touch to EDA with a tool that is not only powerful and efficient but also intuitive to use, moving past outdated design philosophies.
+2. **Modernizing EDA:** We're bringing a modern touch to EDA with a tool that is not only powerful and efficient but also intuitive to use, moving forward from outdated design philosophies of the past.
 3. **The Future is Open:** The future of hardware development is open. This project fosters a collaborative ecosystem where innovation flourishes through transparency and community-driven development, rather than through closed-source solutions.
+
+Ostival is currently in development. Once it becomes stable, we'll release installable binaries for all desktop platforms. So, stay tuned!
 
 ## Features
 - High-performance C++ core optimized for speed and scalability
@@ -22,6 +24,9 @@ Our motivation to start this project is:
 
 - Qt 6.9.1
 - CMake 3.16
+- Icarus Verilog*
+
+\* Ostival doesn't come with the pre-compiled binary of Icarus Verilog. The user can install it manually on their PC. We'll add all tools to the community server in the future, so you don't have to worry about installing and managing different tools, and you can focus solely on designing the awesome hardware.
 
 ## How to Build an Ostival Desktop Application?
 Create a folder named **build** and cd to build
