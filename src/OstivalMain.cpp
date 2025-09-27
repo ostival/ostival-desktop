@@ -16,10 +16,39 @@ Team Ostival (hello@ostival.org)
 #include "MainGUIWindow.h"
 #include "InitialDialog.h"
 #include "TempFiles.h"
+#include "cliHandler.h"
 
 int main(int argc, char *argv[]) {
     
     QApplication app(argc, argv);
+
+    /*
+    Application metadata
+    */
+    app.setApplicationName(APP_NAME);
+    app.setApplicationDisplayName(APP_NAME);
+    app.setApplicationVersion(APP_VERSION);
+    app.setOrganizationName(DEV_TEAM);
+    app.setOrganizationDomain(DOMAIN_NAME);
+
+    /*
+    Command line parser for Command Line Interface (CLI)
+    */
+    QCommandLineParser parser;
+    cliHandler::setupParser(parser);
+    parser.process(app);
+
+    /*
+    Exit the application if it is running in CLI mode
+    */
+    if (cliHandler::run(parser) == 0) {
+        return 0;
+    }
+
+    /*
+    GUI application if there is no CLI command. 
+    */
+    qDebug() << "Ostival Desktop Started";
 
     /*
     VLSI Tool availability check
@@ -37,28 +66,6 @@ int main(int argc, char *argv[]) {
 
     if(toolcheck.netgencheck())
         qDebug() << "Netgen tool not found\n";
-    /*
-    Application metadata
-    */
-    app.setApplicationName(APP_NAME);
-    app.setApplicationDisplayName(APP_NAME);
-    app.setApplicationVersion(APP_VERSION);
-    app.setOrganizationName(DEV_TEAM);
-    app.setOrganizationDomain(DOMAIN_NAME);
-
-    /*
-    Command line parser for Command Line Interface (CLI)
-    */
-    QCommandLineParser parser;
-    parser.setApplicationDescription(ABOUT_MESSAGE);
-    parser.addHelpOption();
-    parser.addVersionOption();
-    parser.process(app);
-    
-    /*
-    GUI application if there is no CLI command. 
-    */
-    qDebug() << "Ostival Desktop Started";
 
     /*
     Ensure temp file exsists or not. If not, create one so that we can use it for other purposes.
