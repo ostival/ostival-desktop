@@ -53,7 +53,7 @@ int main(int argc, char *argv[]) {
     /*
     VLSI Tool availability check
     */
-   ToolCommunicator toolcheck;
+    ToolCommunicator toolcheck;
 
     if(toolcheck.iverilogcheck())
         qDebug() << "iVerilog tool not found\n";
@@ -68,38 +68,52 @@ int main(int argc, char *argv[]) {
         qDebug() << "Netgen tool not found\n";
 
     /*
-    Ensure temp file exsists or not. If not, create one so that we can use it for other purposes.
-    Like, check the last project. No need to open initial dialog again and again.
+    Ensure temp file exsists or not. If not, create one using the dialog so that we don't have to enter project name again and again.
     */
-    TempFiles::ensureTempFileExists();
+    if(TempFiles::tempFileExists()){
 
-    QString projectName, projectPath;
-    if (TempFiles::readTempFile(projectName, projectPath)) {
-        qDebug() << "Project Name:" << projectName;
-        qDebug() << "Project Path:" << projectPath;
-    }
+        TempFiles::readTempFile(projectName, projectPath);
 
-    /*
-    Initial dialog box is added so that user can choose project path.
-    */
-    InitialDialog dialog;
-
-    if (dialog.exec() == QDialog::Accepted)
-    {
         /*
-        Project path is the main directory for the app.
-        Project name is the identifier for the project.
+        GUI Window start
         */
-        projectName = dialog.getProjectName();
-        projectPath = dialog.getProjectPath();
-
         MainGUIWindow window;
+
         window.setWindowTitle("Ostival Desktop");
         window.showMaximized();
 
         qDebug() << projectPath;
 
         return app.exec();
+    } else {
+        /*
+        Initial dialog box is added so that user can choose project path and project name.
+        */
+        InitialDialog dialog;
+
+        if (dialog.exec() == QDialog::Accepted)
+        {
+            /*
+            Project path is the main directory for the project.
+            Project name is the identifier for the project.
+            */
+            projectName = dialog.getProjectName();
+            projectPath = dialog.getProjectPath();
+
+            TempFiles::createTempFile(projectName,projectPath);
+
+            /*
+            GUI Window start
+            */
+            MainGUIWindow window;
+
+            window.setWindowTitle("Ostival Desktop");
+            window.showMaximized();
+
+            qDebug() << projectPath;
+
+            return app.exec();
+        }
     }
 
     return 0;
