@@ -18,6 +18,16 @@ Team Ostival (hello@ostival.org)
 #define DEV_TEAM "Team Ostival"
 #define DOMAIN_NAME "ostival.org"
 
+/*
+Colors for command line interface.
+*/
+#define RED     "\033[31m"
+#define GREEN   "\033[32m"
+#define RESET   "\033[0m"
+
+/*
+Global variables to handle the project.
+*/
 extern QString projectName;
 extern QString projectPath;
 

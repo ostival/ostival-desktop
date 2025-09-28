@@ -10,6 +10,7 @@ Team Ostival (hello@ostival.org)
 #include "config.h"
 #include "cliHandler.h"
 #include "TempFiles.h"
+#include "ToolCommunicator.h"
 
 void cliHandler::setupParser(QCommandLineParser &parser)
 {
@@ -17,7 +18,7 @@ void cliHandler::setupParser(QCommandLineParser &parser)
     parser.addHelpOption();
     parser.addVersionOption();
     parser.addOption({{"p", "proj"}, "Status of the current project"});
-    parser.addOption({{"t2", "test2"}, "Test2 command, will be replaced with useful command"});
+    parser.addOption({{"t", "tool"}, "Check for tools availability"});
 }
 
 int cliHandler::run(QCommandLineParser &parser)
@@ -34,8 +35,36 @@ int cliHandler::run(QCommandLineParser &parser)
         return 0;
     }
 
-    if (parser.isSet("test2")) {
-        qDebug() << "Test2 command, will be replaced with useful command";
+    if (parser.isSet("tool")){
+        /*
+        VLSI Tool availability check
+        */
+        ToolCommunicator toolcheck;
+
+        if(toolcheck.iverilogcheck()){
+            qDebug().noquote() << RED  "iVerilog tool not found"  RESET;
+        } else {
+            qDebug().noquote() << GREEN  "*iVerilog tool found*"  RESET;
+        }
+
+        if(toolcheck.yosyscheck()){
+            qDebug().noquote() << RED  "Yosys tool not found"  RESET;
+        } else {
+            qDebug().noquote() << GREEN  "*Yosys tool found*"  RESET;
+        }
+        
+        if(toolcheck.magiccheck()){
+            qDebug().noquote() << RED  "Magic tool not found"  RESET;
+        } else {
+            qDebug().noquote() << GREEN  "*Magic tool found*"  RESET;
+        }
+
+        if(toolcheck.netgencheck()){
+            qDebug().noquote() << RED "Netgen tool not found"  RESET;
+        } else {
+            qDebug().noquote() << GREEN  "*Netgen tool found*"  RESET;
+        }
+
         return 0;
     }
 

@@ -18,12 +18,12 @@ int ToolCommunicator::iverilogcheck()
     process.start("iverilog", QStringList() << "-v");
 
     if(!process.waitForStarted()){
-        qDebug() << "Something wrong"; 
+        // qDebug() << "Something wrong"; 
         return -1;
     }
 
     if(!process.waitForFinished()){
-        qDebug() << "Something wrong";
+        // qDebug() << "Something wrong";
         return -1;
     }
 
@@ -37,12 +37,12 @@ int ToolCommunicator::yosyscheck()
     process.start("yosys", QStringList() << "--version");
 
     if(!process.waitForStarted()){
-        qDebug() << "Something wrong"; 
+        // qDebug() << "Something wrong"; 
         return -1;
     }
 
     if(!process.waitForFinished()){
-        qDebug() << "Something wrong";
+        // qDebug() << "Something wrong";
         return -1;
     }
 
@@ -56,12 +56,12 @@ int ToolCommunicator::magiccheck()
     process.start("magic", QStringList() << "--version");
 
     if(!process.waitForStarted()){
-        qDebug() << "Something wrong"; 
+        // qDebug() << "Something wrong"; 
         return -1;
     }
 
     if(!process.waitForFinished()){
-        qDebug() << "Something wrong";
+        // qDebug() << "Something wrong";
         return -1;
     }
 
@@ -75,12 +75,12 @@ int ToolCommunicator::netgencheck()
     process.start("netgen", QStringList() << "-v");
 
     if(!process.waitForStarted()){
-        qDebug() << "Something wrong"; 
+        // qDebug() << "Something wrong"; 
         return -1;
     }
 
     if(!process.waitForFinished()){
-        qDebug() << "Something wrong";
+        // qDebug() << "Something wrong";
         return -1;
     }
 

@@ -12,7 +12,6 @@ Team Ostival (hello@ostival.org)
 #include <QDebug>
 #include <QProcess>
 #include "config.h"
-#include "ToolCommunicator.h"
 #include "MainGUIWindow.h"
 #include "InitialDialog.h"
 #include "TempFiles.h"
@@ -49,23 +48,6 @@ int main(int argc, char *argv[]) {
     GUI application if there is no CLI command. 
     */
     qDebug() << "Ostival Desktop Started";
-
-    /*
-    VLSI Tool availability check
-    */
-    ToolCommunicator toolcheck;
-
-    if(toolcheck.iverilogcheck())
-        qDebug() << "iVerilog tool not found\n";
-
-    if(toolcheck.yosyscheck())
-        qDebug() << "Yosys tool not found\n";
-    
-    if(toolcheck.magiccheck())
-        qDebug() << "Magic tool not found\n";
-
-    if(toolcheck.netgencheck())
-        qDebug() << "Netgen tool not found\n";
 
     /*
     Ensure temp file exsists or not. If not, create one using the dialog so that we don't have to enter project name again and again.
