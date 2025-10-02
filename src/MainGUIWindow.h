@@ -13,6 +13,7 @@ Team Ostival (hello@ostival.org)
 #include <QMainWindow>
 #include "RightDockBuilder.h"
 #include "StatusBarBuilder.h"
+#include "LeftDockBuilder.h"
 
 class MainGUIWindow : public QMainWindow {
     Q_OBJECT
@@ -20,13 +21,12 @@ class MainGUIWindow : public QMainWindow {
 public:
     explicit MainGUIWindow(QWidget *parent = nullptr);
     ~MainGUIWindow() override = default; 
-
     friend class ToolBarBuilder;
 
-
 private:
-    RightDockBuilder* OstivalrightDockBuilder = nullptr;
-    StatusBarBuilder *OstivalstatusBarBuilder;
+    RightDockBuilder *OstivalrightDockBuilder = nullptr;
+    StatusBarBuilder *OstivalstatusBarBuilder = nullptr;
+    LeftDockBuilder *OstivalleftDockBuilder = nullptr;
     
 };
 

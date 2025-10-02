@@ -24,3 +24,7 @@ LeftDockBuilder::LeftDockBuilder(QMainWindow *mainWindow, QObject *parent)
     OstivalleftDock->setWidget(leftContent);
     OstivalleftDock->setFeatures(QDockWidget::DockWidgetClosable | QDockWidget::DockWidgetMovable);
 }
+
+QDockWidget* LeftDockBuilder::getLeftDockWidget() const {
+    return OstivalleftDock;
+}

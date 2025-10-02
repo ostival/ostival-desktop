@@ -13,13 +13,15 @@ Team Ostival (hello@ostival.org)
 #include <QObject>
 #include <QMenuBar>
 #include "SettingsDialog.h"
+#include "LeftDockBuilder.h"
+#include "RightDockBuilder.h"
 
 class FileMenuBuilder : public QObject
 {
     Q_OBJECT
 
 public:
-    explicit FileMenuBuilder(QMenuBar *menuBar, QWidget *parentWindow, QObject *parent = nullptr);
+    FileMenuBuilder(QMenuBar *menuBar, QWidget *parentWindow, LeftDockBuilder *leftDock, RightDockBuilder *rightDock, QObject *parent = nullptr);
 
 private slots:
     void onOpenFile();
@@ -30,6 +32,8 @@ private slots:
 private:
     QMenuBar *OstivalmenuBar;
     QWidget *OstivalparentWindow;
+    LeftDockBuilder *OstivalleftDockBuilder;
+    RightDockBuilder *OstivalrightDockBuilder;
 };
 
 #endif

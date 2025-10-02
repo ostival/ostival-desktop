@@ -21,9 +21,7 @@ class RightDockBuilder : public QObject
 
 public:
     explicit RightDockBuilder(QMainWindow *mainWindow, QObject *parent = nullptr);
-
-    void hideDock();
-    void showDock();
+    QDockWidget* getRightDockWidget() const;
 
 private:
     QMainWindow *OstivalmainWindow;

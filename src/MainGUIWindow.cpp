@@ -18,9 +18,16 @@ Team Ostival (hello@ostival.org)
 MainGUIWindow::MainGUIWindow(QWidget *parent)
     : QMainWindow(parent)
 {
+
+    // Left Dock Panel
+    OstivalleftDockBuilder = new LeftDockBuilder(this, this);
+
+    // Right Dock Panel
+    OstivalrightDockBuilder = new RightDockBuilder(this, this);
+    
     // File Menu Bar
     QMenuBar *bar = this->menuBar();
-    new FileMenuBuilder(bar, this, this);
+    new FileMenuBuilder(bar, this, OstivalleftDockBuilder, OstivalrightDockBuilder, this);
 
     // Toolbar
     new ToolBarBuilder(this, this);
@@ -28,12 +35,6 @@ MainGUIWindow::MainGUIWindow(QWidget *parent)
     // Central Widget
     CentralWidget *central = new CentralWidget(this);
     setCentralWidget(central);
-
-    // Left Dock Panel
-    new LeftDockBuilder(this, this);
-
-    // Right Dock Panel
-    OstivalrightDockBuilder = new RightDockBuilder(this, this);
 
     // Status Bar
     OstivalstatusBarBuilder = new StatusBarBuilder(this);

@@ -21,6 +21,7 @@ class LeftDockBuilder : public QObject
 
 public:
     explicit LeftDockBuilder(QMainWindow *mainWindow, QObject *parent = nullptr);
+    QDockWidget* getLeftDockWidget() const;
 
 private:
     QMainWindow *OstivalmainWindow;

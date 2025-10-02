@@ -15,8 +15,8 @@ Team Ostival (hello@ostival.org)
 #include "FileMenuBuilder.h"
 #include "config.h"
 
-FileMenuBuilder::FileMenuBuilder(QMenuBar *menuBar, QWidget *parentWindow, QObject *parent)
-    : QObject(parent), OstivalmenuBar(menuBar), OstivalparentWindow(parentWindow)
+FileMenuBuilder::FileMenuBuilder(QMenuBar *menuBar, QWidget *parentWindow, LeftDockBuilder *leftDock, RightDockBuilder *rightDock, QObject *parent)
+    : QObject(parent), OstivalmenuBar(menuBar), OstivalparentWindow(parentWindow),OstivalleftDockBuilder(leftDock),OstivalrightDockBuilder(rightDock)
 {
     QMenu *fileMenu = OstivalmenuBar->addMenu("File");
 
@@ -61,7 +61,19 @@ FileMenuBuilder::FileMenuBuilder(QMenuBar *menuBar, QWidget *parentWindow, QObje
 
     // --- View Menu ---
     QMenu *viewMenu = OstivalmenuBar->addMenu("View");
-    QAction *exampleView = viewMenu->addAction("Something");
+    QAction *toggleLeftPanel = new QAction("Left Panel", this);
+    toggleLeftPanel->setCheckable(true);
+    toggleLeftPanel->setChecked(true);
+    viewMenu->addAction(toggleLeftPanel);
+    connect(toggleLeftPanel, &QAction::toggled,OstivalleftDockBuilder->getLeftDockWidget(), &QDockWidget::setVisible);
+    connect(OstivalleftDockBuilder->getLeftDockWidget(), &QDockWidget::visibilityChanged,toggleLeftPanel, &QAction::setChecked);
+
+    QAction *toggleRightPanel = new QAction("Right Panel", this);
+    toggleRightPanel->setCheckable(true);
+    toggleRightPanel->setChecked(true);
+    viewMenu->addAction(toggleRightPanel);
+    connect(toggleRightPanel, &QAction::toggled,OstivalrightDockBuilder->getRightDockWidget(), &QDockWidget::setVisible);
+    connect(OstivalrightDockBuilder->getRightDockWidget(), &QDockWidget::visibilityChanged,toggleRightPanel, &QAction::setChecked);
 
     // --- Help Menu ---
     QMenu *helpMenu = OstivalmenuBar->addMenu("Help");

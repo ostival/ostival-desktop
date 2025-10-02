@@ -25,14 +25,6 @@ RightDockBuilder::RightDockBuilder(QMainWindow *mainWindow, QObject *parent)
     OstivalrightDock->setFeatures(QDockWidget::DockWidgetClosable | QDockWidget::DockWidgetMovable);
 }
 
-void RightDockBuilder::hideDock()
-{
-    if (OstivalrightDock)
-        OstivalrightDock->hide();
-}
-
-void RightDockBuilder::showDock()
-{
-    if (OstivalrightDock)
-        OstivalrightDock->show();
+QDockWidget* RightDockBuilder::getRightDockWidget() const {
+    return OstivalrightDock;
 }
