@@ -25,8 +25,28 @@ CentralWidget::CentralWidget(QWidget *parent)
 
     new SyntaxHighlighter(OstivalTextEdit->document());
 
+    saveButton = new QPushButton("Save File", this);
+    saveButton->setFixedHeight(36);
+    saveButton->setStyleSheet(R"(
+        QPushButton {
+        background-color: #196042;
+        color: white;
+        border-radius: 10px;
+        padding: 6px 12px;
+        font-size: 14px;
+    }
+    QPushButton:hover {
+        background-color: #002b73;
+    }
+    QPushButton:pressed {
+        background-color: #9cd304;
+    }
+    )");
+
     auto *mainLayout = new QVBoxLayout;
     mainLayout->addWidget(OstivalTextEdit);
+    mainLayout->addWidget(saveButton);
+
 
     setLayout(mainLayout);
 }

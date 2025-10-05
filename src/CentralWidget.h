@@ -12,6 +12,7 @@ Team Ostival (hello@ostival.org)
 
 #include <QWidget>
 #include <QTextEdit>
+#include <QPushButton>
 
 class CentralWidget : public QWidget
 {
@@ -22,6 +23,7 @@ public:
 
 private:
     QTextEdit *OstivalTextEdit;
+    QPushButton *saveButton;
 
 };
 
