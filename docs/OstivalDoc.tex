@@ -12,15 +12,10 @@
 \usepackage{contour}
 \contourlength{0.2em}
 
-\newcommand\BackgroundPic{
-    \put(0,0){
-        \parbox[b][\paperheight]{\paperwidth}{
-            \vfill
-            \centering
-            \includegraphics[width=\paperwidth,height=\paperheight]{figures/ostival-doc-cover.jpg}
-            \vfill
-        }
-    }
+\newcommand\BackgroundPic{%
+  \put(0,0){%
+    \includegraphics[width=\paperwidth,height=\paperheight]{figures/ostival-doc-cover.jpg}%
+  }%
 }
 
 \begin{document}
@@ -61,7 +56,9 @@
 
 \mainmatter
 
-\chapter{Introduction}
+\input{chapters/10intro.tex}
+\input{chapters/20getstarted.tex}
+\input{chapters/30cli.tex}
 
 \backmatter
 \bibliographystyle{plain} 
