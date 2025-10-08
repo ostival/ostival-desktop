@@ -9,6 +9,8 @@ Team Ostival (hello@ostival.org)
 
 #include <QVBoxLayout>
 #include <QFont>
+#include <QShortcut>
+#include <QKeySequence>
 #include "CentralWidget.h"
 #include "SyntaxHighlighter.h"
 
@@ -43,10 +45,25 @@ CentralWidget::CentralWidget(QWidget *parent)
     }
     )");
 
+    /*
+    For handling save file 1. keyboard 2. button in UI
+    */
+    QShortcut *shortcut = new QShortcut(QKeySequence("Ctrl+s"), this);
+    connect(shortcut, &QShortcut::activated, this, &CentralWidget::saveText);
+    connect(saveButton, &QPushButton::clicked, this, &CentralWidget::saveText);
+
     auto *mainLayout = new QVBoxLayout;
     mainLayout->addWidget(OstivalTextEdit);
     mainLayout->addWidget(saveButton);
 
-
     setLayout(mainLayout);
+}
+
+
+void CentralWidget::saveText(){
+    /*
+    This is for handling save file. Need to add logic to save file.
+    */
+    QString current = OstivalTextEdit->toPlainText();
+    qDebug() << "Text changed, new content:" << current;
 }

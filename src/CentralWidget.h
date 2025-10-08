@@ -21,6 +21,9 @@ class CentralWidget : public QWidget
 public:
     explicit CentralWidget(QWidget *parent = nullptr);
 
+private slots:
+    void saveText();
+
 private:
     QTextEdit *OstivalTextEdit;
     QPushButton *saveButton;
