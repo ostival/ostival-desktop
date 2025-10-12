@@ -30,6 +30,7 @@ add_executable(Ostival
     src/InitialDialog.cpp
     src/TempFiles.cpp
     src/cliHandler.cpp
+    src/ProjectFileHandler.cpp
 )
 
 target_include_directories(Ostival PRIVATE ${CMAKE_SOURCE_DIR})

@@ -30,20 +30,33 @@ SyntaxHighlighter::SyntaxHighlighter(QTextDocument *parent)
     : QSyntaxHighlighter(parent)
 {
     QTextCharFormat keywordFormat;
-    keywordFormat.setForeground(QColor("#0077CC"));
+    QStringList module_words = {"module", "endmodule", "input", "output", "inout"};
+    QStringList pair_words = {"begin", "end", "if", "else", "case", "casex", "endcase"};
+    QStringList connection_words = {"wire", "reg", "posedge", "negedge"};
+    QStringList compiler_words = {"`include", "`define", "`timescale"};
+    QStringList system_words = {"$display", "$fopen", "$fclose"};
+
     keywordFormat.setFontWeight(QFont::Bold);
-    QStringList keywords = {"module", "endmodule", "input", "output", "wire", "reg","assign", "if", "else", "case", "for", "while", "always"};
-    for (const QString &word : keywords)
+
+    keywordFormat.setForeground(QColor("#0077CC"));
+    for (const QString &word : module_words)
         highlightingRules.append({QRegularExpression("\\b" + word + "\\b"), keywordFormat});
 
     keywordFormat.setForeground(QColor("#a0cc00"));
-    keywordFormat.setFontWeight(QFont::Bold);
-    QStringList custonkeywords = {"begin", "end"};
-    for (const QString &word : custonkeywords)
+    for (const QString &word : pair_words)
         highlightingRules.append({QRegularExpression("\\b" + word + "\\b"), keywordFormat});
 
-    highlightingRules.append({QRegularExpression("`include\\b"), keywordFormat});
-    highlightingRules.append({QRegularExpression("`define\\b"), keywordFormat});
+    keywordFormat.setForeground(QColor("#f4d042"));
+    for (const QString &word : connection_words)
+        highlightingRules.append({QRegularExpression("\\b" + word + "\\b"), keywordFormat});
+    
+    keywordFormat.setForeground(QColor("#eb3be8"));
+    for (const QString &word : system_words)
+        highlightingRules.append({ QRegularExpression(QRegularExpression::escape(word) + "(?!\\w)"), keywordFormat });
+
+    keywordFormat.setForeground(QColor("#36cbd9"));
+    for (const QString &word : compiler_words)
+        highlightingRules.append({QRegularExpression(QRegularExpression::escape(word) + "(?!\\w)"), keywordFormat});
 
     /*
     Single Line Comment Highlight
