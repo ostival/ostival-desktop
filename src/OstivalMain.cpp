@@ -17,6 +17,7 @@ Team Ostival (hello@ostival.org)
 #include "TempFiles.h"
 #include "cliHandler.h"
 #include "ProjectFileHandler.h"
+#include "CentralLogger.h"
 
 int main(int argc, char *argv[]) {
     
@@ -88,6 +89,13 @@ int main(int argc, char *argv[]) {
 
     // We got project path and project name. Good to start the GUI.
     MainGUIWindow window;
+
+    // Init logger
+    QString log_file_path = projectPath + "/" + projectName + "/all_log_files/mainlog.txt";
+    if (!CentralLogger::initialize(log_file_path)) {
+        qDebug() << "Unable to create log file\n";
+        qDebug() << log_file_path;
+    }
 
     window.setWindowTitle("Ostival Desktop");
     window.showMaximized();

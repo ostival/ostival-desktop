@@ -110,7 +110,7 @@ LeftDockBuilder::LeftDockBuilder(QMainWindow *mainWindow, QObject *parent)
         QAction *selectedAction = menu.exec(listWidget->viewport()->mapToGlobal(pos));
         if (selectedAction == deleteAction) {
             QString fileName = item->text();
-            QString filePath = projectPath + "/" + projectName + "/design_src/" + fileName + ".v";
+            QString filePath = projectPath + "/" + projectName + "/design_src/" + fileName;
 
             QFile file(filePath);
             if (file.exists() && file.remove()) {
