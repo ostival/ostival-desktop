@@ -23,6 +23,23 @@ Team Ostival (hello@ostival.org)
 #include "LeftDockBuilder.h"
 #include "config.h"
 
+const QString MODERN_BUTTON_STYLE = R"(
+    QPushButton {
+        background-color: #00A9A5;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        padding: 8px 16px;
+        font-size: 14px;
+    }
+    QPushButton:hover {
+        background-color: #008F8B;
+    }
+    QPushButton:pressed {
+        background-color: #006B68;
+    }
+)";
+
 LeftDockBuilder::LeftDockBuilder(QMainWindow *mainWindow, QObject *parent)
     : QObject(parent), OstivalmainWindow(mainWindow)
 {
@@ -45,7 +62,7 @@ LeftDockBuilder::LeftDockBuilder(QMainWindow *mainWindow, QObject *parent)
     header->setFixedHeight(40);
     header->setStyleSheet(R"(
         QLabel {
-            background-color: #002b73;
+            background-color: #f877ff;
             color: white;
             border-radius: 12px;
             font-size: 16px;
@@ -56,6 +73,34 @@ LeftDockBuilder::LeftDockBuilder(QMainWindow *mainWindow, QObject *parent)
     )");
 
     QListWidget *listWidget = new QListWidget;
+    listWidget->setStyleSheet(R"(
+    QListWidget {
+        background-color: #f5f7fa;
+        color: #5C4033; /* Brown text */
+        border: 1px solid #d0d0d0;
+        border-radius: 6px;
+        padding: 4px;
+        font-size: 14px;
+        outline: 0;
+    }
+
+    QListWidget::item {
+        padding: 8px 12px;
+        border: none;
+        margin: 2px 0;
+        color: #5C4033; /* Brown for normal items */
+    }
+
+    QListWidget::item:selected {
+        background-color: #00A9A5;
+        color: white; /* White text when selected */
+        border-radius: 4px;
+    }
+
+    QListWidget::item:hover {
+        background-color: #e0f7f6;
+        border-radius: 4px;
+    })");
 
     QString jsonpath = projectPath + "/" + projectName + "/" + projectName + ".ostival";
 
@@ -144,23 +189,31 @@ LeftDockBuilder::LeftDockBuilder(QMainWindow *mainWindow, QObject *parent)
     });
 
     // Refresh button
-    QPushButton *refreshButton = new QPushButton("Refresh");
-    refreshButton->setStyleSheet(R"(
-        QPushButton {
-            background-color: #196042;
-            color: white;
-            border-radius: 10px;
-            padding: 6px 12px;
-            font-size: 14px;
-        }
-        QPushButton:hover { background-color: #002b73; }
-        QPushButton:pressed { background-color: #9cd304; }
-    )");
-    QObject::connect(refreshButton, &QPushButton::clicked, updateListFromJson);
+    QPushButton *compileButton = new QPushButton("Compile");
+    compileButton->setStyleSheet(MODERN_BUTTON_STYLE);
+
+    QPushButton *simulateButton = new QPushButton("Simulate");
+    simulateButton->setStyleSheet(MODERN_BUTTON_STYLE);
+
+    QPushButton *synthesisButton = new QPushButton("Synthesis");
+    synthesisButton->setStyleSheet(MODERN_BUTTON_STYLE);
+
+    QPushButton *implementationButton = new QPushButton("PnR");
+    implementationButton->setStyleSheet(MODERN_BUTTON_STYLE);
+
+    QPushButton *layoutButton = new QPushButton("Generate Layout");
+    layoutButton->setStyleSheet(MODERN_BUTTON_STYLE);
+
+    QObject::connect(compileButton, &QPushButton::clicked, updateListFromJson);
 
     layout->addWidget(header);
     layout->addWidget(listWidget);
-    layout->addWidget(refreshButton);
+    layout->addWidget(compileButton);
+    layout->addWidget(simulateButton);
+    layout->addWidget(synthesisButton);
+    layout->addWidget(implementationButton);
+    layout->addWidget(layoutButton);
+
 
     container->setLayout(layout);
     OstivalleftDock->setWidget(container);

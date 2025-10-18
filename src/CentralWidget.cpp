@@ -16,6 +16,23 @@ Team Ostival (hello@ostival.org)
 #include "SyntaxHighlighter.h"
 #include "config.h"
 
+const QString MODERN_BUTTON_STYLE = R"(
+    QPushButton {
+        background-color: #00A9A5;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        padding: 8px 16px;
+        font-size: 14px;
+    }
+    QPushButton:hover {
+        background-color: #008F8B;
+    }
+    QPushButton:pressed {
+        background-color: #006B68;
+    }
+)";
+
 CentralWidget::CentralWidget(QWidget *parent)
     : QWidget(parent) {
 
@@ -31,21 +48,7 @@ CentralWidget::CentralWidget(QWidget *parent)
 
     saveButton = new QPushButton("Save File", this);
     saveButton->setFixedHeight(36);
-    saveButton->setStyleSheet(R"(
-        QPushButton {
-        background-color: #196042;
-        color: white;
-        border-radius: 10px;
-        padding: 6px 12px;
-        font-size: 14px;
-    }
-    QPushButton:hover {
-        background-color: #002b73;
-    }
-    QPushButton:pressed {
-        background-color: #9cd304;
-    }
-    )");
+    saveButton->setStyleSheet(MODERN_BUTTON_STYLE);
 
     /*
     For handling save file 1. keyboard 2. button in UI

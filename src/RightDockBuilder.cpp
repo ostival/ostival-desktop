@@ -14,6 +14,23 @@ Team Ostival (hello@ostival.org)
 #include <QVBoxLayout>
 #include "RightDockBuilder.h"
 
+const QString MODERN_BUTTON_STYLE = R"(
+    QPushButton {
+        background-color: #00A9A5;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        padding: 8px 16px;
+        font-size: 14px;
+    }
+    QPushButton:hover {
+        background-color: #008F8B;
+    }
+    QPushButton:pressed {
+        background-color: #006B68;
+    }
+)";
+
 RightDockBuilder::RightDockBuilder(QMainWindow *mainWindow, QObject *parent)
     : QObject(parent), OstivalmainWindow(mainWindow)
 {
@@ -36,7 +53,7 @@ RightDockBuilder::RightDockBuilder(QMainWindow *mainWindow, QObject *parent)
     header->setFixedHeight(40);
     header->setStyleSheet(R"(
         QLabel {
-            background-color: #002b73;
+            background-color: #f877ff;
             color: white;
             border-radius: 12px;
             font-size: 16px;
@@ -50,21 +67,7 @@ RightDockBuilder::RightDockBuilder(QMainWindow *mainWindow, QObject *parent)
     listWidget->addItems({"Tool: ", "Status: ", "Technology: "});
 
     QPushButton *refreshButton = new QPushButton("Refresh");
-    refreshButton->setStyleSheet(R"(
-    QPushButton {
-        background-color: #196042;
-        color: white;
-        border-radius: 10px;
-        padding: 6px 12px;
-        font-size: 14px;
-    }
-    QPushButton:hover {
-        background-color: #002b73;
-    }
-    QPushButton:pressed {
-        background-color: #9cd304;
-    }
-    )");
+    refreshButton->setStyleSheet(MODERN_BUTTON_STYLE);
 
     layout->addWidget(header);
     layout->addWidget(listWidget);
