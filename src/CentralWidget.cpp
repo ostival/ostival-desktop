@@ -9,10 +9,12 @@ Team Ostival (hello@ostival.org)
 
 #include <QVBoxLayout>
 #include <QFont>
+#include <QFile>
 #include <QShortcut>
 #include <QKeySequence>
 #include "CentralWidget.h"
 #include "SyntaxHighlighter.h"
+#include "config.h"
 
 CentralWidget::CentralWidget(QWidget *parent)
     : QWidget(parent) {
@@ -60,10 +62,39 @@ CentralWidget::CentralWidget(QWidget *parent)
 }
 
 
-void CentralWidget::saveText(){
-    /*
-    This is for handling save file. Need to add logic to save file.
-    */
-    QString current = OstivalTextEdit->toPlainText();
-    qDebug() << "Text changed, new content:" << current;
+void CentralWidget::saveText()
+{
+    if (currentFilePath.isEmpty()) {
+        qWarning() << "No file currently open to save!";
+        return;
+    }
+
+    QFile file(currentFilePath);
+    if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
+        qWarning() << "Cannot save file:" << currentFilePath << file.errorString();
+        return;
+    }
+
+    file.write(OstivalTextEdit->toPlainText().toUtf8());
+    file.close();
+
+    qDebug() << "File saved:" << currentFilePath;
+}
+
+
+void CentralWidget::openFileInEditor(const QString &fileName)
+{
+    QString filePath = projectPath + "/" + projectName + "/design_src/" + fileName;
+    QFile file(filePath);
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        qWarning() << "Cannot open file:" << filePath << file.errorString();
+        currentFilePath.clear();
+        return;
+    }
+
+    OstivalTextEdit->setPlainText(file.readAll());
+    file.close();
+
+    currentFilePath = filePath;
+    qDebug() << "Loaded file into editor:" << filePath;
 }

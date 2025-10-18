@@ -24,9 +24,13 @@ public:
 private slots:
     void saveText();
 
+public slots:
+    void openFileInEditor(const QString &fileName);
+
 private:
     QTextEdit *OstivalTextEdit;
     QPushButton *saveButton;
+    QString currentFilePath;
 
 };
 

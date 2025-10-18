@@ -24,6 +24,7 @@ public:
     FileMenuBuilder(QMenuBar *menuBar, QWidget *parentWindow, LeftDockBuilder *leftDock, RightDockBuilder *rightDock, QObject *parent = nullptr);
 
 private slots:
+    void createVerilogFile();
     void onOpenFile();
     void onOpenFolder();
     void handleClear();

@@ -73,6 +73,7 @@ void InitialDialog::validateAndAccept()
     QString projectName = getProjectName();
     QString projectPath = getProjectPath();
     QString project = projectPath + "/" + projectName;
+    QString project_design = projectPath + "/" + projectName + "/design_src";
     QRegularExpression re("^[A-Za-z0-9_]+$");
 
     if (projectName.isEmpty() || projectPath.isEmpty()) {
@@ -86,6 +87,7 @@ void InitialDialog::validateAndAccept()
         QMessageBox::warning(this, "Project Exists","Opening Existing Project");
     } else{
         if(dir.mkdir(project)){
+            dir.mkdir(project_design);
             QMessageBox::warning(this, "Folder created","Project folder created\n");
         }else {
             QMessageBox::warning(this, "Something wrong","Something wrong!!! Path Invalid\n");

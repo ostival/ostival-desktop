@@ -22,7 +22,7 @@ Ostival is currently in development. Once it becomes stable, we'll release insta
 
 ## Depedencies
 
-- Qt 6.9.1
+- Qt 6.10.0
 - CMake 3.16
 - Icarus Verilog*
 
@@ -35,21 +35,21 @@ Create a folder named **build** and cd to build
 
 Then run the commands to build the executable file given below:
 ### Windows
-    cmake .. -G "MinGW Makefiles" -DCMAKE_PREFIX_PATH="C:/Qt/6.9.1/mingw_64/lib/cmake"
+    cmake .. -G "MinGW Makefiles" -DCMAKE_PREFIX_PATH="C:/Qt/6.10.0/mingw_64/lib/cmake"
 
     make
 
-    C:\Qt\6.9.1\mingw_64\bin\windeployqt.exe C:\Users\username\ostival-desktop\build\Ostival.exe
+    C:\Qt\6.10\mingw_64\bin\windeployqt.exe C:\Users\username\ostival-desktop\build\Ostival.exe
 
     ./Ostival.exe
 ### Linux
-    cmake .. -DCMAKE_PREFIX_PATH="$HOME/Qt/6.9.1/gcc_64"
+    cmake .. -DCMAKE_PREFIX_PATH="$HOME/Qt/6.10.0/gcc_64"
 
     make
 
     ./Ostival
 ### Mac
-    cmake .. -DCMAKE_PREFIX_PATH="$HOME/Qt/6.9.1/macos"
+    cmake .. -DCMAKE_PREFIX_PATH="$HOME/Qt/6.10.0/macos"
 
     make
 

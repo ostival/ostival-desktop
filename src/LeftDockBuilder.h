@@ -23,9 +23,13 @@ public:
     explicit LeftDockBuilder(QMainWindow *mainWindow, QObject *parent = nullptr);
     QDockWidget* getLeftDockWidget() const;
 
+signals:
+    void fileDoubleClicked(const QString &fileName);
+
 private:
     QMainWindow *OstivalmainWindow;
     QDockWidget *OstivalleftDock;
+    void handleFileClicked(const QString &fileName);
 };
 
 #endif

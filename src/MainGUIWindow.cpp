@@ -36,6 +36,9 @@ MainGUIWindow::MainGUIWindow(QWidget *parent)
     CentralWidget *central = new CentralWidget(this);
     setCentralWidget(central);
 
+    // Connect LeftDock signal to CentralWidget slot which will read file and display in qtexteditor
+    QObject::connect(OstivalleftDockBuilder, &LeftDockBuilder::fileDoubleClicked,central, &CentralWidget::openFileInEditor);
+
     // Status Bar
     OstivalstatusBarBuilder = new StatusBarBuilder(this);
     OstivalstatusBarBuilder->getStatusBar()->showMessage("Ready!", 1200);

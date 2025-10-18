@@ -12,6 +12,13 @@ Team Ostival (hello@ostival.org)
 #include <QFileDialog>
 #include <QDebug>
 #include <QMessageBox>
+#include <QPushButton>
+#include <QLineEdit>
+#include <QDateTime>
+#include <QRegularExpression>
+#include <QJsonDocument>
+#include <QJsonObject>
+#include <QJsonArray>
 #include "FileMenuBuilder.h"
 #include "config.h"
 
@@ -24,6 +31,10 @@ FileMenuBuilder::FileMenuBuilder(QMenuBar *menuBar, QWidget *parentWindow, LeftD
 
     QAction *openAction = fileMenu->addAction("Open");
     connect(openAction, &QAction::triggered, this, &FileMenuBuilder::onOpenFile);
+
+    fileMenu->addSeparator();
+    QAction *createVfile = fileMenu->addAction("Create .v file");
+    connect(createVfile, &QAction::triggered, this, &FileMenuBuilder::createVerilogFile);
 
     fileMenu->addSeparator();
 
@@ -81,6 +92,124 @@ FileMenuBuilder::FileMenuBuilder(QMenuBar *menuBar, QWidget *parentWindow, LeftD
     connect(aboutAction, &QAction::triggered, this, [this]() {
         QMessageBox::about(OstivalparentWindow, "About Ostival", ABOUT_MESSAGE);
     });
+}
+
+void FileMenuBuilder::createVerilogFile() {
+    QDialog dialog(OstivalparentWindow);
+    dialog.setWindowTitle("Create New .v File");
+
+    QVBoxLayout *layout = new QVBoxLayout(&dialog);
+    QLabel *label = new QLabel("Enter Verilog file name (e.g., alu_core):", &dialog);
+    QLineEdit *lineEdit = new QLineEdit(&dialog);
+    QLabel *errorLabel = new QLabel(&dialog);
+    errorLabel->setStyleSheet("color: red;");
+
+    QPushButton *okButton = new QPushButton("Create", &dialog);
+    QPushButton *cancelButton = new QPushButton("Cancel", &dialog);
+
+    layout->addWidget(label);
+    layout->addWidget(lineEdit);
+    layout->addWidget(errorLabel);
+
+    QHBoxLayout *buttonLayout = new QHBoxLayout();
+    buttonLayout->addStretch();
+    buttonLayout->addWidget(okButton);
+    buttonLayout->addWidget(cancelButton);
+    layout->addLayout(buttonLayout);
+
+    QObject::connect(cancelButton, &QPushButton::clicked, &dialog, &QDialog::reject);
+
+    QObject::connect(okButton, &QPushButton::clicked, [&]() {
+        QString fileName = lineEdit->text().trimmed();
+
+        // Validation
+        if (fileName.isEmpty()) {
+            errorLabel->setText("Please enter a file name.");
+            lineEdit->setFocus();
+            return;
+        }
+
+        QRegularExpression validName("^[A-Za-z_][A-Za-z0-9_]*$");
+        if (!validName.match(fileName).hasMatch()) {
+            errorLabel->setText("Invalid name. Use only letters, digits, and underscores.\nMust not start with a number.");
+            lineEdit->setFocus();
+            return;
+        }
+
+        fileName = fileName.toLower();
+        QString verilogPath = projectPath + "/" + projectName + "/design_src/" + fileName + ".v";
+
+        if (QFile::exists(verilogPath)) {
+            errorLabel->setText("File already exists!");
+            lineEdit->setFocus();
+            return;
+        }
+
+        // Create Verilog file
+        QString timestamp = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss");
+        QFile file(verilogPath);
+        if (!file.open(QIODevice::WriteOnly | QIODevice::Truncate | QIODevice::Text)) {
+            errorLabel->setText("Can't open file: " + file.errorString());
+            return;
+        }
+
+        QTextStream out(&file);
+        out << "// File created using Ostival\n";
+        out << "// Created on: " << timestamp << "\n";
+        out << "// Filename: " << fileName << ".v\n";
+        file.close();
+
+        qDebug() << "File created successfully:" << verilogPath;
+
+        // Append filename to JSON ("src_files")
+        QString jsonPath = projectPath + "/" + projectName + "/" + projectName + ".ostival";
+
+        QFile jsonFile(jsonPath);
+        if (!jsonFile.exists()) {
+            qWarning() << "JSON file not found:" << jsonPath;
+            dialog.accept();
+            return;
+        }
+
+        if (!jsonFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
+            qWarning() << "Can't open JSON file for reading:" << jsonFile.errorString();
+            dialog.accept();
+            return;
+        }
+
+        QByteArray jsonData = jsonFile.readAll();
+        jsonFile.close();
+
+        QJsonDocument doc = QJsonDocument::fromJson(jsonData);
+        if (!doc.isObject()) {
+            qWarning() << "Invalid JSON structure.";
+            dialog.accept();
+            return;
+        }
+
+        QJsonObject root = doc.object();
+        QJsonArray srcFiles = root["src_files"].toArray();
+
+        if (!srcFiles.contains(fileName + ".v")) {
+            srcFiles.append(fileName + ".v");
+            root["src_files"] = srcFiles;
+            doc.setObject(root);
+
+            if (jsonFile.open(QIODevice::WriteOnly | QIODevice::Truncate | QIODevice::Text)) {
+                jsonFile.write(doc.toJson(QJsonDocument::Indented));
+                jsonFile.close();
+                qDebug() << "Added" << fileName + ".v" << "to src_files in JSON.";
+            } else {
+                qWarning() << "Failed to open JSON for writing:" << jsonFile.errorString();
+            }
+        } else {
+            qDebug() << "File already listed in src_files.";
+        }
+
+        dialog.accept();
+    });
+
+    dialog.exec();
 }
 
 void FileMenuBuilder::onOpenFile()
