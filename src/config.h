@@ -31,4 +31,49 @@ Global variables to handle the project.
 extern QString projectName;
 extern QString projectPath;
 
+/*
+User Interface constants
+*/
+const QString MODERN_TITLE_STYLE = R"(
+        QLabel {
+            background-color: #ff8808;
+            color: white;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            padding-left: 10px;
+            padding-right: 10px;
+        }
+    )";
+;
+
+const QString MODERN_LIST_STYLE = R"(
+    QListWidget {
+        background-color: #f5f7fa;
+        color: #5C4033; /* Brown text */
+        border: 1px solid #d0d0d0;
+        border-radius: 6px;
+        padding: 4px;
+        font-size: 14px;
+        outline: 0;
+    }
+
+    QListWidget::item {
+        padding: 8px 12px;
+        border: none;
+        margin: 2px 0;
+        color: #5C4033;
+    }
+
+    QListWidget::item:selected {
+        background-color: #00A9A5;
+        color: white;
+        border-radius: 4px;
+    }
+
+    QListWidget::item:hover {
+        background-color: #e0f7f6;
+        border-radius: 4px;
+    })";
+
 #endif

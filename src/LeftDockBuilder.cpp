@@ -23,22 +23,6 @@ Team Ostival (hello@ostival.org)
 #include "LeftDockBuilder.h"
 #include "config.h"
 
-const QString MODERN_BUTTON_STYLE = R"(
-    QPushButton {
-        background-color: #00A9A5;
-        color: white;
-        border: none;
-        border-radius: 6px;
-        padding: 8px 16px;
-        font-size: 14px;
-    }
-    QPushButton:hover {
-        background-color: #008F8B;
-    }
-    QPushButton:pressed {
-        background-color: #006B68;
-    }
-)";
 
 LeftDockBuilder::LeftDockBuilder(QMainWindow *mainWindow, QObject *parent)
     : QObject(parent), OstivalmainWindow(mainWindow)
@@ -57,55 +41,34 @@ LeftDockBuilder::LeftDockBuilder(QMainWindow *mainWindow, QObject *parent)
 
     QVBoxLayout *layout = new QVBoxLayout(container);
 
-    QLabel *header = new QLabel("Project Navigation");
-    header->setAlignment(Qt::AlignCenter);
-    header->setFixedHeight(40);
-    header->setStyleSheet(R"(
-        QLabel {
-            background-color: #f877ff;
-            color: white;
-            border-radius: 12px;
-            font-size: 16px;
-            font-weight: 600;
-            padding-left: 10px;
-            padding-right: 10px;
-        }
-    )");
+    QLabel *design_header  = new QLabel("Design Files");
+    design_header->setAlignment(Qt::AlignCenter);
+    design_header->setFixedHeight(20);
+    design_header->setStyleSheet(MODERN_TITLE_STYLE);
 
-    QListWidget *listWidget = new QListWidget;
-    listWidget->setStyleSheet(R"(
-    QListWidget {
-        background-color: #f5f7fa;
-        color: #5C4033; /* Brown text */
-        border: 1px solid #d0d0d0;
-        border-radius: 6px;
-        padding: 4px;
-        font-size: 14px;
-        outline: 0;
-    }
+    QLabel *tb_header  = new QLabel("Testbench Files");
+    tb_header->setAlignment(Qt::AlignCenter);
+    tb_header->setFixedHeight(20);
+    tb_header->setStyleSheet(MODERN_TITLE_STYLE);
 
-    QListWidget::item {
-        padding: 8px 12px;
-        border: none;
-        margin: 2px 0;
-        color: #5C4033; /* Brown for normal items */
-    }
+    QLabel *py_header  = new QLabel("Python Files");
+    py_header->setAlignment(Qt::AlignCenter);
+    py_header->setFixedHeight(20);
+    py_header->setStyleSheet(MODERN_TITLE_STYLE);
 
-    QListWidget::item:selected {
-        background-color: #00A9A5;
-        color: white; /* White text when selected */
-        border-radius: 4px;
-    }
+    QListWidget *listWidget = new QListWidget;                  // Design Files
+    listWidget->setStyleSheet(MODERN_LIST_STYLE);
 
-    QListWidget::item:hover {
-        background-color: #e0f7f6;
-        border-radius: 4px;
-    })");
+    QListWidget *listWidget1 = new QListWidget;                 // Testbench Files
+    listWidget1->setStyleSheet(MODERN_LIST_STYLE);
+
+    QListWidget *listWidget2 = new QListWidget;                 // Python Files
+    listWidget2->setStyleSheet(MODERN_LIST_STYLE);
 
     QString jsonpath = projectPath + "/" + projectName + "/" + projectName + ".ostival";
 
     // To load src_files from JSON into the list
-    auto updateListFromJson = [listWidget, jsonpath]() {
+    auto updateListFromJson = [listWidget, listWidget1, listWidget2, jsonpath]() {
         QFile f(jsonpath);
         if (!f.open(QIODevice::ReadOnly)) {
             qWarning() << "Can't open JSON file:" << jsonpath << f.errorString();
@@ -119,9 +82,23 @@ LeftDockBuilder::LeftDockBuilder(QMainWindow *mainWindow, QObject *parent)
         QJsonArray arr = doc.object()["src_files"].toArray();
         qDebug() << "Found" << arr.size() << "files in JSON:" << arr;
 
+        QJsonArray arr1 = doc.object()["testbench_files"].toArray();
+        qDebug() << "Found" << arr1.size() << "files in JSON:" << arr1;
+
+        QJsonArray arr2 = doc.object()["python_files"].toArray();
+        qDebug() << "Found" << arr2.size() << "files in JSON:" << arr2;
+
         listWidget->clear();
         for (auto v : arr)
             listWidget->addItem(v.toString());
+        
+        listWidget1->clear();
+        for (auto v : arr1)
+            listWidget1->addItem(v.toString());
+
+        listWidget2->clear();
+        for (auto v : arr2)
+            listWidget2->addItem(v.toString());
     };
 
     // Initial load
@@ -139,6 +116,27 @@ LeftDockBuilder::LeftDockBuilder(QMainWindow *mainWindow, QObject *parent)
     QObject::connect(listWidget, &QListWidget::itemDoubleClicked, [=](QListWidgetItem *item){
         if (item) {
             QString fileName = item->text();
+            fileName = "/design_src/" + fileName;
+            qDebug() << "User double-clicked file:" << fileName;
+            emit fileDoubleClicked(fileName);
+        }
+    });
+
+    listWidget1->setContextMenuPolicy(Qt::CustomContextMenu);
+    QObject::connect(listWidget1, &QListWidget::itemDoubleClicked, [=](QListWidgetItem *item){
+        if (item) {
+            QString fileName = item->text();
+            fileName = "/testbench_src/" + fileName;
+            qDebug() << "User double-clicked file:" << fileName;
+            emit fileDoubleClicked(fileName);
+        }
+    });
+
+    listWidget2->setContextMenuPolicy(Qt::CustomContextMenu);
+    QObject::connect(listWidget2, &QListWidget::itemDoubleClicked, [=](QListWidgetItem *item){
+        if (item) {
+            QString fileName = item->text();
+            fileName = "/python_src/" + fileName;
             qDebug() << "User double-clicked file:" << fileName;
             emit fileDoubleClicked(fileName);
         }
@@ -188,32 +186,12 @@ LeftDockBuilder::LeftDockBuilder(QMainWindow *mainWindow, QObject *parent)
         }
     });
 
-    // Refresh button
-    QPushButton *compileButton = new QPushButton("Compile");
-    compileButton->setStyleSheet(MODERN_BUTTON_STYLE);
-
-    QPushButton *simulateButton = new QPushButton("Simulate");
-    simulateButton->setStyleSheet(MODERN_BUTTON_STYLE);
-
-    QPushButton *synthesisButton = new QPushButton("Synthesis");
-    synthesisButton->setStyleSheet(MODERN_BUTTON_STYLE);
-
-    QPushButton *implementationButton = new QPushButton("PnR");
-    implementationButton->setStyleSheet(MODERN_BUTTON_STYLE);
-
-    QPushButton *layoutButton = new QPushButton("Generate Layout");
-    layoutButton->setStyleSheet(MODERN_BUTTON_STYLE);
-
-    QObject::connect(compileButton, &QPushButton::clicked, updateListFromJson);
-
-    layout->addWidget(header);
+    layout->addWidget(design_header);
     layout->addWidget(listWidget);
-    layout->addWidget(compileButton);
-    layout->addWidget(simulateButton);
-    layout->addWidget(synthesisButton);
-    layout->addWidget(implementationButton);
-    layout->addWidget(layoutButton);
-
+    layout->addWidget(tb_header);
+    layout->addWidget(listWidget1);
+    layout->addWidget(py_header);
+    layout->addWidget(listWidget2);
 
     container->setLayout(layout);
     OstivalleftDock->setWidget(container);

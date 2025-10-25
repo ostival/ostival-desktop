@@ -29,6 +29,9 @@ void ProjectFileHandler::createInitialfile(){
     projectJson["ProjectPath"] = projectPath;
     projectJson["ProjectName"] = projectName;
     projectJson["src_files"] = "";
+    projectJson["testbench_files"] = "";
+    projectJson["python_files"] = "";
+
 
     QJsonDocument doc(projectJson);
 

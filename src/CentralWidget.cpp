@@ -87,7 +87,7 @@ void CentralWidget::saveText()
 
 void CentralWidget::openFileInEditor(const QString &fileName)
 {
-    QString filePath = projectPath + "/" + projectName + "/design_src/" + fileName;
+    QString filePath = projectPath + "/" + projectName + fileName;
     QFile file(filePath);
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
         qWarning() << "Cannot open file:" << filePath << file.errorString();

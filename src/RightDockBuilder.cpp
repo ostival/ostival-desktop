@@ -69,9 +69,29 @@ RightDockBuilder::RightDockBuilder(QMainWindow *mainWindow, QObject *parent)
     QPushButton *refreshButton = new QPushButton("Refresh");
     refreshButton->setStyleSheet(MODERN_BUTTON_STYLE);
 
+    QPushButton *compileButton = new QPushButton("Compile");
+    compileButton->setStyleSheet(MODERN_BUTTON_STYLE);
+
+    QPushButton *simulateButton = new QPushButton("Simulate");
+    simulateButton->setStyleSheet(MODERN_BUTTON_STYLE);
+
+    QPushButton *synthesisButton = new QPushButton("Synthesis");
+    synthesisButton->setStyleSheet(MODERN_BUTTON_STYLE);
+
+    QPushButton *implementationButton = new QPushButton("PnR");
+    implementationButton->setStyleSheet(MODERN_BUTTON_STYLE);
+
+    QPushButton *layoutButton = new QPushButton("Generate Layout");
+    layoutButton->setStyleSheet(MODERN_BUTTON_STYLE);
+
     layout->addWidget(header);
     layout->addWidget(listWidget);
     layout->addWidget(refreshButton);
+    layout->addWidget(compileButton);
+    layout->addWidget(simulateButton);
+    layout->addWidget(synthesisButton);
+    layout->addWidget(implementationButton);
+    layout->addWidget(layoutButton);
 
     container->setLayout(layout);
     OstivalrightDock->setWidget(container);
