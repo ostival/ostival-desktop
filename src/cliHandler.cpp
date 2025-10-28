@@ -65,6 +65,23 @@ int cliHandler::run(QCommandLineParser &parser)
             qDebug().noquote() << GREEN  "*Netgen tool found*"  RESET;
         }
 
+        if(toolcheck.gitcheck()){
+            qDebug().noquote() << RED "Git tool not found"  RESET;
+        } else {
+            qDebug().noquote() << GREEN  "*Git tool found*"  RESET;
+        }
+
+        if(toolcheck.pythoncheck()){
+            qDebug().noquote() << RED "Python tool not found, checking for Python 3 "  RESET;
+            if(toolcheck.python3check()){
+                qDebug().noquote() << RED "Python 3 also not found"  RESET;
+            } else {
+                qDebug().noquote() << GREEN  "*Python 3 tool found*"  RESET;
+            }
+        } else {
+            qDebug().noquote() << GREEN  "*Python tool found*"  RESET;
+        }
+
         return 0;
     }
 

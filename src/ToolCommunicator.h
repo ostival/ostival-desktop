@@ -11,6 +11,7 @@ Team Ostival (hello@ostival.org)
 #define TOOLCOMMUNICATOR_H
 
 #include <QProcess>
+#include <QDebug>
 
 class ToolCommunicator 
 {
@@ -19,7 +20,9 @@ class ToolCommunicator
     int yosyscheck();
     int magiccheck();
     int netgencheck();
-
+    int gitcheck();
+    int pythoncheck();
+    int python3check();
 };
 
 #endif
