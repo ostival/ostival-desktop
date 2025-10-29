@@ -13,6 +13,7 @@ Team Ostival (hello@ostival.org)
 #include <QWidget>
 #include <QTextEdit>
 #include <QPushButton>
+#include "DrawSchematic.h"
 
 class CentralWidget : public QWidget
 {
@@ -26,11 +27,14 @@ private slots:
 
 public slots:
     void openFileInEditor(const QString &fileName);
+    void openSchematicWindow();
 
 private:
     QTextEdit *OstivalTextEdit;
     QPushButton *saveButton;
     QString currentFilePath;
+    QPushButton *schematicButton;
+    DrawSchematic *schematicWindow = nullptr;
 
 };
 

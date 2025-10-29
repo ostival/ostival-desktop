@@ -32,6 +32,7 @@ add_executable(Ostival
     src/cliHandler.cpp
     src/ProjectFileHandler.cpp
     src/CentralLogger.cpp
+    src/DrawSchematic.cpp
 )
 
 target_include_directories(Ostival PRIVATE ${CMAKE_SOURCE_DIR})

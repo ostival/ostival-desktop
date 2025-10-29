@@ -49,6 +49,7 @@ CentralWidget::CentralWidget(QWidget *parent)
     saveButton = new QPushButton("Save File", this);
     saveButton->setFixedHeight(36);
     saveButton->setStyleSheet(MODERN_BUTTON_STYLE);
+    schematicButton = new QPushButton("Open Schematic", this);
 
     /*
     For handling save file 1. keyboard 2. button in UI
@@ -56,10 +57,12 @@ CentralWidget::CentralWidget(QWidget *parent)
     QShortcut *shortcut = new QShortcut(QKeySequence("Ctrl+s"), this);
     connect(shortcut, &QShortcut::activated, this, &CentralWidget::saveText);
     connect(saveButton, &QPushButton::clicked, this, &CentralWidget::saveText);
+    connect(schematicButton, &QPushButton::clicked, this, &CentralWidget::openSchematicWindow);
 
     auto *mainLayout = new QVBoxLayout;
     mainLayout->addWidget(OstivalTextEdit);
     mainLayout->addWidget(saveButton);
+    mainLayout->addWidget(schematicButton);
 
     setLayout(mainLayout);
 }
@@ -100,4 +103,22 @@ void CentralWidget::openFileInEditor(const QString &fileName)
 
     currentFilePath = filePath;
     qDebug() << "Loaded file into editor:" << filePath;
+}
+
+
+void CentralWidget::openSchematicWindow()
+{
+    if (schematicWindow == nullptr) {
+        schematicWindow = new DrawSchematic();
+        
+        schematicWindow->setAttribute(Qt::WA_DeleteOnClose);
+        
+        connect(schematicWindow, &QObject::destroyed, [this]() {
+            schematicWindow = nullptr;
+        });
+    }
+
+    schematicWindow->show();
+    schematicWindow->raise();
+    schematicWindow->activateWindow();
 }
