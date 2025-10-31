@@ -28,9 +28,20 @@ class DrawSchematic : public QWidget
 
 public:
     explicit DrawSchematic(QWidget *parent = nullptr);
+    ~DrawSchematic();
 
 protected:
     void paintEvent(QPaintEvent *event) override;           // to draw custom shapes
+
+    void drawAND(QPainter &painter, double x, double y, double scale);
+    void drawOR(QPainter &painter, double x, double y, double scale);
+    void drawNOT(QPainter &painter, double x, double y, double scale);
+
+    void drawNAND(QPainter &painter, double x, double y, double scale);
+    void drawNOR(QPainter &painter, double x, double y, double scale);
+
+    void drawXOR(QPainter &painter, double x, double y, double scale);
+    void drawXNOR(QPainter &painter, double x, double y, double scale);
 };
 
 
