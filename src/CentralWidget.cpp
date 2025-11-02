@@ -16,6 +16,7 @@ Team Ostival (hello@ostival.org)
 #include "SyntaxHighlighter.h"
 #include "config.h"
 #include "TerminalDialog.h"
+#include "VcdViewer.h"
 
 const QString MODERN_BUTTON_STYLE = R"(
     QPushButton {
@@ -54,9 +55,13 @@ CentralWidget::CentralWidget(QWidget *parent)
 
     // --- New Terminal Button ---
     terminalButton = new QPushButton("Launch Interactive Terminal", this);
-    // Distinctive style for the terminal launcher
     terminalButton->setStyleSheet("background-color: #4CAF50; color: white; border: none; border-radius: 4px; padding: 5px 10px; font-weight: bold;");
     terminalButton->setFixedHeight(36);
+
+    // VCD dialog open button
+    vcdButton = new QPushButton("Open VCD Viewer", this);
+    vcdButton->setStyleSheet("background-color: #FF5555; color: white; border: none; border-radius: 4px; padding: 5px 10px; font-weight: bold;");
+    vcdButton->setFixedHeight(36);
 
     /*
     For handling save file 1. keyboard 2. button in UI
@@ -65,14 +70,15 @@ CentralWidget::CentralWidget(QWidget *parent)
     connect(shortcut, &QShortcut::activated, this, &CentralWidget::saveText);
     connect(saveButton, &QPushButton::clicked, this, &CentralWidget::saveText);
     connect(schematicButton, &QPushButton::clicked, this, &CentralWidget::openSchematicWindow);
-    // Connect the new button to the terminal launch slot
     connect(terminalButton, &QPushButton::clicked, this, &CentralWidget::launchTerminal);
+    connect(vcdButton, &QPushButton::clicked, this, &CentralWidget::openVcdViewer);
 
     auto *mainLayout = new QVBoxLayout;
     mainLayout->addWidget(OstivalTextEdit);
     mainLayout->addWidget(saveButton);
     mainLayout->addWidget(schematicButton);
     mainLayout->addWidget(terminalButton);
+    mainLayout->addWidget(vcdButton);
 
     setLayout(mainLayout);
 }
@@ -150,4 +156,13 @@ void CentralWidget::launchTerminal(){
     dialog->setModal(false); 
     dialog->setAttribute(Qt::WA_DeleteOnClose); 
     dialog->show();
+}
+
+void CentralWidget::openVcdViewer()
+{
+    // Create and show the VCD Viewer dialog
+    VcdViewer *viewer = new VcdViewer(this);
+    viewer->setModal(false); 
+    viewer->setAttribute(Qt::WA_DeleteOnClose); 
+    viewer->show();
 }

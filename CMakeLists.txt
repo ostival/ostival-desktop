@@ -34,6 +34,7 @@ add_executable(Ostival
     src/CentralLogger.cpp
     src/DrawSchematic.cpp
     src/TerminalDialog.cpp
+    src/VcdViewer.cpp
 )
 
 target_include_directories(Ostival PRIVATE ${CMAKE_SOURCE_DIR})

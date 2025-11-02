@@ -25,6 +25,7 @@ public:
 private slots:
     void saveText();
     void launchTerminal();
+    void openVcdViewer();
 
 public slots:
     void openFileInEditor(const QString &fileName);
@@ -37,6 +38,7 @@ private:
     QPushButton *schematicButton;
     DrawSchematic *schematicWindow = nullptr;
     QPushButton *terminalButton;
+    QPushButton *vcdButton;
 
 };
 
