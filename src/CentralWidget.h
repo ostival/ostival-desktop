@@ -24,6 +24,7 @@ public:
 
 private slots:
     void saveText();
+    void launchTerminal();
 
 public slots:
     void openFileInEditor(const QString &fileName);
@@ -35,6 +36,7 @@ private:
     QString currentFilePath;
     QPushButton *schematicButton;
     DrawSchematic *schematicWindow = nullptr;
+    QPushButton *terminalButton;
 
 };
 
