@@ -105,7 +105,7 @@ void TimingDiagramWidget::drawDigitalSignal(QGraphicsScene *s, int yOffset, int 
 }
 
 
-void TimingDiagramWidget::wheelEvent(QWheelEvent *event)ß{
+void TimingDiagramWidget::wheelEvent(QWheelEvent *event){
     const double scaleFactor = 1.15;
     if (event->angleDelta().y() > 0) {
         scale(scaleFactor, scaleFactor);

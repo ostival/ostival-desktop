@@ -11,3 +11,6 @@ Team Ostival (hello@ostival.org)
 
 QString projectName = "";
 QString projectPath = "";
+QString mainDesignFile = "";
+QString mainTestbenchFile = "";
+QString mainPythonFile = "";

@@ -142,15 +142,15 @@ LeftDockBuilder::LeftDockBuilder(QMainWindow *mainWindow, QObject *parent)
         }
     });
 
-    QObject::connect(listWidget, &QListWidget::customContextMenuRequested,
-                     [=](const QPoint &pos) {
+    QObject::connect(listWidget, &QListWidget::customContextMenuRequested,[=](const QPoint &pos) {
         QListWidgetItem *item = listWidget->itemAt(pos);
         if (!item) return;
 
         QMenu menu;
         QAction *deleteAction = menu.addAction("Delete File");
-
+        QAction *setMainFile = menu.addAction("Set Main File");
         QAction *selectedAction = menu.exec(listWidget->viewport()->mapToGlobal(pos));
+
         if (selectedAction == deleteAction) {
             QString fileName = item->text();
             QString filePath = projectPath + "/" + projectName + "/design_src/" + fileName;
@@ -183,6 +183,112 @@ LeftDockBuilder::LeftDockBuilder(QMainWindow *mainWindow, QObject *parent)
             } else {
                 qWarning() << "Failed to delete file:" << filePath;
             }
+        } else if (selectedAction == setMainFile) {
+            QString fileName = item->text();
+            mainDesignFile = fileName;
+            qDebug() << "item selected as main file" << fileName;
+        } else {
+            qWarning() << "Something is missing";
+        }
+    });
+
+    QObject::connect(listWidget1, &QListWidget::customContextMenuRequested,[=](const QPoint &pos) {
+        QListWidgetItem *item = listWidget1->itemAt(pos);
+        if (!item) return;
+
+        QMenu menu;
+        QAction *deleteAction = menu.addAction("Delete File");
+        QAction *setMainFile = menu.addAction("Set Main File");
+        QAction *selectedAction = menu.exec(listWidget1->viewport()->mapToGlobal(pos));
+
+        if (selectedAction == deleteAction) {
+            QString fileName = item->text();
+            QString filePath = projectPath + "/" + projectName + "/testbench_src/" + fileName;
+
+            QFile file(filePath);
+            if (file.exists() && file.remove()) {
+                qDebug() << "Deleted file:" << filePath;
+
+                QFile f(jsonpath);
+                if (f.open(QIODevice::ReadOnly)) {
+                    QJsonDocument doc = QJsonDocument::fromJson(f.readAll());
+                    f.close();
+
+                    QJsonObject obj = doc.object();
+                    QJsonArray arr = obj["testbench_files"].toArray();
+                    QJsonArray newArr;
+                    for (auto v : arr) {
+                        if (v.toString() != fileName) newArr.append(v.toString());
+                    }
+                    obj["testbench_files"] = newArr;
+
+                    if (f.open(QIODevice::WriteOnly | QIODevice::Truncate)) {
+                        f.write(QJsonDocument(obj).toJson(QJsonDocument::Indented));
+                        f.close();
+                    }
+                }
+
+                // Remove from list
+                delete listWidget1->takeItem(listWidget1->row(item));
+            } else {
+                qWarning() << "Failed to delete file:" << filePath;
+            }
+        } else if (selectedAction == setMainFile) {
+            QString fileName = item->text();
+            mainTestbenchFile = fileName;
+            qDebug() << "item selected as main file" << fileName;
+        } else {
+            qWarning() << "Something is missing";
+        }
+    });
+
+    QObject::connect(listWidget2, &QListWidget::customContextMenuRequested,[=](const QPoint &pos) {
+        QListWidgetItem *item = listWidget2->itemAt(pos);
+        if (!item) return;
+
+        QMenu menu;
+        QAction *deleteAction = menu.addAction("Delete File");
+        QAction *setMainFile = menu.addAction("Set Main File");
+        QAction *selectedAction = menu.exec(listWidget2->viewport()->mapToGlobal(pos));
+
+        if (selectedAction == deleteAction) {
+            QString fileName = item->text();
+            QString filePath = projectPath + "/" + projectName + "/python_src/" + fileName;
+
+            QFile file(filePath);
+            if (file.exists() && file.remove()) {
+                qDebug() << "Deleted file:" << filePath;
+
+                QFile f(jsonpath);
+                if (f.open(QIODevice::ReadOnly)) {
+                    QJsonDocument doc = QJsonDocument::fromJson(f.readAll());
+                    f.close();
+
+                    QJsonObject obj = doc.object();
+                    QJsonArray arr = obj["python_files"].toArray();
+                    QJsonArray newArr;
+                    for (auto v : arr) {
+                        if (v.toString() != fileName) newArr.append(v.toString());
+                    }
+                    obj["python_files"] = newArr;
+
+                    if (f.open(QIODevice::WriteOnly | QIODevice::Truncate)) {
+                        f.write(QJsonDocument(obj).toJson(QJsonDocument::Indented));
+                        f.close();
+                    }
+                }
+
+                // Remove from list
+                delete listWidget2->takeItem(listWidget2->row(item));
+            } else {
+                qWarning() << "Failed to delete file:" << filePath;
+            }
+        } else if (selectedAction == setMainFile) {
+            QString fileName = item->text();
+            mainPythonFile = fileName;
+            qDebug() << "item selected as main file" << mainPythonFile;
+        } else {
+            qWarning() << "Something is missing";
         }
     });
 

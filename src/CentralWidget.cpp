@@ -142,6 +142,9 @@ void CentralWidget::openSchematicWindow()
 void CentralWidget::launchTerminal(){
 
     QString program;
+    QString script_path;
+
+    script_path = projectPath + "/" + projectName + "/python_src/" + mainPythonFile;
 
     #ifdef Q_OS_WIN
         program = "python";
@@ -150,7 +153,7 @@ void CentralWidget::launchTerminal(){
     #endif
 
     QStringList arguments;
-    arguments << "test_script.py"; // Path to the script this needs to be dynamic -- will change it in the future
+    arguments << script_path;
 
     TerminalDialog *dialog = new TerminalDialog(program, arguments, this);
     dialog->setModal(false); 

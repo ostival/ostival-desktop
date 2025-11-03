@@ -30,6 +30,9 @@ Global variables to handle the project.
 */
 extern QString projectName;
 extern QString projectPath;
+extern QString mainDesignFile;
+extern QString mainTestbenchFile;
+extern QString mainPythonFile;
 
 /*
 User Interface constants

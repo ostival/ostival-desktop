@@ -30,6 +30,7 @@ private:
     QMainWindow *OstivalmainWindow;
     QDockWidget *OstivalleftDock;
     void handleFileClicked(const QString &fileName);
+    void rightClickLogic();
 };
 
 #endif
