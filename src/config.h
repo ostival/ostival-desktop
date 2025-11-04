@@ -33,6 +33,7 @@ extern QString projectPath;
 extern QString mainDesignFile;
 extern QString mainTestbenchFile;
 extern QString mainPythonFile;
+extern QString defaultSyntax;
 
 /*
 User Interface constants

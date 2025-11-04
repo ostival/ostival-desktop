@@ -14,6 +14,7 @@ Team Ostival (hello@ostival.org)
 #include <QKeySequence>
 #include "CentralWidget.h"
 #include "SyntaxHighlighter.h"
+#include "SyntaxHighlighterPython.h"
 #include "config.h"
 #include "TerminalDialog.h"
 #include "VcdViewer.h"
@@ -35,8 +36,7 @@ const QString MODERN_BUTTON_STYLE = R"(
     }
 )";
 
-CentralWidget::CentralWidget(QWidget *parent)
-    : QWidget(parent) {
+CentralWidget::CentralWidget(QWidget *parent) : QWidget(parent) {
 
     OstivalTextEdit = new QTextEdit(this);
     
@@ -45,8 +45,6 @@ CentralWidget::CentralWidget(QWidget *parent)
     OstivalTextEdit->setFont(QFont("Courier", 16));
 
     OstivalTextEdit->setStyleSheet("background-color: #282A36; color: #F8F8F2;");
-
-    new SyntaxHighlighter(OstivalTextEdit->document());
 
     saveButton = new QPushButton("Save File", this);
     saveButton->setFixedHeight(36);
@@ -106,6 +104,25 @@ void CentralWidget::saveText()
 
 void CentralWidget::openFileInEditor(const QString &fileName)
 {
+    // Delete the old syntax highlighter
+    if (currentHighlighter) {
+        delete currentHighlighter;
+        currentHighlighter = nullptr;
+    }
+
+    // Determine highlighter based on the file extension
+    if (fileName.endsWith(".v", Qt::CaseInsensitive)) {
+        currentHighlighter = new SyntaxHighlighter(OstivalTextEdit->document());
+        qDebug() << "Syntax Highlighter set to Verilog";
+    } else if (fileName.endsWith(".py", Qt::CaseInsensitive)) {
+        currentHighlighter = new SyntaxHighlighterPython(OstivalTextEdit->document());
+        qDebug() << "Syntax Highlighter set to Python";
+    } else {
+        currentHighlighter = new SyntaxHighlighter(OstivalTextEdit->document());
+        qDebug() << "Syntax Highlighter set to Default";
+    }
+
+    // Read the file
     QString filePath = projectPath + "/" + projectName + fileName;
     QFile file(filePath);
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
@@ -114,6 +131,7 @@ void CentralWidget::openFileInEditor(const QString &fileName)
         return;
     }
 
+    // Load the file into the text editor
     OstivalTextEdit->setPlainText(file.readAll());
     file.close();
 

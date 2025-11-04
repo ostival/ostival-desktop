@@ -26,9 +26,8 @@ Team Ostival (hello@ostival.org)
 #include <QFont>
 #include "SyntaxHighlighter.h"
 
-SyntaxHighlighter::SyntaxHighlighter(QTextDocument *parent)
-    : QSyntaxHighlighter(parent)
-{
+SyntaxHighlighter::SyntaxHighlighter(QTextDocument *parent) : QSyntaxHighlighter(parent){
+    
     QTextCharFormat keywordFormat;
     QStringList module_words = {"module", "endmodule", "input", "output", "inout"};
     QStringList pair_words = {"begin", "end", "if", "else", "case", "casex", "endcase"};

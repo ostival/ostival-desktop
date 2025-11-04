@@ -13,6 +13,7 @@ Team Ostival (hello@ostival.org)
 #include <QWidget>
 #include <QTextEdit>
 #include <QPushButton>
+#include <QSyntaxHighlighter>
 #include "DrawSchematic.h"
 
 class CentralWidget : public QWidget
@@ -39,6 +40,7 @@ private:
     DrawSchematic *schematicWindow = nullptr;
     QPushButton *terminalButton;
     QPushButton *vcdButton;
+    QSyntaxHighlighter *currentHighlighter = nullptr;
 
 };
 

@@ -27,6 +27,7 @@ add_executable(Ostival
     src/StatusBarBuilder.cpp
     src/SettingsDialog.cpp
     src/SyntaxHighlighter.cpp
+    src/SyntaxHighlighterPython.cpp
     src/InitialDialog.cpp
     src/TempFiles.cpp
     src/cliHandler.cpp
