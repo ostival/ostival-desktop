@@ -39,22 +39,27 @@ const QString MODERN_BUTTON_STYLE = R"(
 CentralWidget::CentralWidget(QWidget *parent) : QWidget(parent) {
 
     OstivalTextEdit = new QTextEdit(this);
-    
     OstivalTextEdit->setPlaceholderText("Ostival text editor...");
-
     OstivalTextEdit->setFont(QFont("Courier", 16));
-
     OstivalTextEdit->setStyleSheet("background-color: #282A36; color: #F8F8F2;");
 
     saveButton = new QPushButton("Save File", this);
     saveButton->setFixedHeight(36);
     saveButton->setStyleSheet(MODERN_BUTTON_STYLE);
+
     schematicButton = new QPushButton("Open Schematic", this);
+    schematicButton->setStyleSheet("background-color: #aca634; color: white; border: none; border-radius: 4px; padding: 5px 10px; font-weight: bold;");
+    schematicButton->setFixedHeight(36);
 
     // --- New Terminal Button ---
-    terminalButton = new QPushButton("Launch Interactive Terminal", this);
+    terminalButton = new QPushButton("Run Python Script", this);
     terminalButton->setStyleSheet("background-color: #4CAF50; color: white; border: none; border-radius: 4px; padding: 5px 10px; font-weight: bold;");
     terminalButton->setFixedHeight(36);
+
+    // --- Run iVerilog ---
+    iverilogButton = new QPushButton("Run iVerilog", this);
+    iverilogButton->setStyleSheet("background-color: #4CAF50; color: white; border: none; border-radius: 4px; padding: 5px 10px; font-weight: bold;");
+    iverilogButton->setFixedHeight(36);
 
     // VCD dialog open button
     vcdButton = new QPushButton("Open VCD Viewer", this);
@@ -69,15 +74,20 @@ CentralWidget::CentralWidget(QWidget *parent) : QWidget(parent) {
     connect(saveButton, &QPushButton::clicked, this, &CentralWidget::saveText);
     connect(schematicButton, &QPushButton::clicked, this, &CentralWidget::openSchematicWindow);
     connect(terminalButton, &QPushButton::clicked, this, &CentralWidget::launchTerminal);
+    connect(iverilogButton, &QPushButton::clicked, this, &CentralWidget::launchTerminal1);
     connect(vcdButton, &QPushButton::clicked, this, &CentralWidget::openVcdViewer);
 
     auto *mainLayout = new QVBoxLayout;
-    mainLayout->addWidget(OstivalTextEdit);
-    mainLayout->addWidget(saveButton);
-    mainLayout->addWidget(schematicButton);
-    mainLayout->addWidget(terminalButton);
-    mainLayout->addWidget(vcdButton);
+    QHBoxLayout* buttonRowLayout = new QHBoxLayout;
 
+    buttonRowLayout->addWidget(saveButton);
+    buttonRowLayout->addWidget(iverilogButton);
+    buttonRowLayout->addWidget(schematicButton);
+    buttonRowLayout->addWidget(terminalButton);
+    buttonRowLayout->addWidget(vcdButton);
+
+    mainLayout->addWidget(OstivalTextEdit);
+    mainLayout->addLayout(buttonRowLayout);
     setLayout(mainLayout);
 }
 
@@ -171,6 +181,28 @@ void CentralWidget::launchTerminal(){
     #endif
 
     QStringList arguments;
+    arguments << script_path;
+
+    TerminalDialog *dialog = new TerminalDialog(program, arguments, this);
+    dialog->setModal(false); 
+    dialog->setAttribute(Qt::WA_DeleteOnClose); 
+    dialog->show();
+}
+
+void CentralWidget::launchTerminal1(){
+
+    QString program;
+    QString script_path;
+    QString output_path;
+
+    script_path = projectPath + "/" + projectName + "/design_src/" + mainDesignFile;
+    output_path = projectPath + "/" + projectName + "/all_log_files/main";
+
+    program = "iverilog";
+
+    QStringList arguments;
+    arguments << "-o";
+    arguments << output_path;
     arguments << script_path;
 
     TerminalDialog *dialog = new TerminalDialog(program, arguments, this);

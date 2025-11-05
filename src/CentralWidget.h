@@ -26,6 +26,7 @@ public:
 private slots:
     void saveText();
     void launchTerminal();
+    void launchTerminal1();
     void openVcdViewer();
 
 public slots:
@@ -41,6 +42,7 @@ private:
     QPushButton *terminalButton;
     QPushButton *vcdButton;
     QSyntaxHighlighter *currentHighlighter = nullptr;
+    QPushButton *iverilogButton;
 
 };
 
