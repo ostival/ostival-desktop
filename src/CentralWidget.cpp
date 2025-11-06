@@ -12,6 +12,9 @@ Team Ostival (hello@ostival.org)
 #include <QFile>
 #include <QShortcut>
 #include <QKeySequence>
+#include <QMessageBox>
+#include <QJsonObject>
+#include <QJsonArray>
 #include "CentralWidget.h"
 #include "SyntaxHighlighter.h"
 #include "SyntaxHighlighterPython.h"
@@ -61,6 +64,11 @@ CentralWidget::CentralWidget(QWidget *parent) : QWidget(parent) {
     iverilogButton->setStyleSheet("background-color: #4CAF50; color: white; border: none; border-radius: 4px; padding: 5px 10px; font-weight: bold;");
     iverilogButton->setFixedHeight(36);
 
+    // --- Run VVP ---
+    vvpButton = new QPushButton("run VVP", this);
+    vvpButton->setStyleSheet("background-color: #FF5555; color: white; border: none; border-radius: 4px; padding: 5px 10px; font-weight: bold;");
+    vvpButton->setFixedHeight(36);
+
     // VCD dialog open button
     vcdButton = new QPushButton("Open VCD Viewer", this);
     vcdButton->setStyleSheet("background-color: #FF5555; color: white; border: none; border-radius: 4px; padding: 5px 10px; font-weight: bold;");
@@ -82,6 +90,7 @@ CentralWidget::CentralWidget(QWidget *parent) : QWidget(parent) {
 
     buttonRowLayout->addWidget(saveButton);
     buttonRowLayout->addWidget(iverilogButton);
+    buttonRowLayout->addWidget(vvpButton);
     buttonRowLayout->addWidget(schematicButton);
     buttonRowLayout->addWidget(terminalButton);
     buttonRowLayout->addWidget(vcdButton);
@@ -183,32 +192,82 @@ void CentralWidget::launchTerminal(){
     QStringList arguments;
     arguments << script_path;
 
-    TerminalDialog *dialog = new TerminalDialog(program, arguments, this);
-    dialog->setModal(false); 
-    dialog->setAttribute(Qt::WA_DeleteOnClose); 
-    dialog->show();
+    if (mainPythonFile == ""){
+        QMessageBox::warning(this, "No Main File Exists","Right click on the file and choose select main file before running the Python script.");
+    } else {
+        TerminalDialog *dialog = new TerminalDialog(program, arguments, this);
+        dialog->setModal(false); 
+        dialog->setAttribute(Qt::WA_DeleteOnClose); 
+        dialog->show();
+    }
 }
 
 void CentralWidget::launchTerminal1(){
 
+    QStringList arguments;
+
     QString program;
     QString script_path;
     QString output_path;
-
-    script_path = projectPath + "/" + projectName + "/design_src/" + mainDesignFile;
+    int designArrayLength;
+    int testbenchArrayLength;
+    
+    QString jsonpath = projectPath + "/" + projectName + "/" + projectName + ".ostival";
+    script_path = projectPath + "/" + projectName + "/design_src/";
     output_path = projectPath + "/" + projectName + "/all_log_files/main";
 
     program = "iverilog";
 
-    QStringList arguments;
     arguments << "-o";
     arguments << output_path;
-    arguments << script_path;
 
-    TerminalDialog *dialog = new TerminalDialog(program, arguments, this);
-    dialog->setModal(false); 
-    dialog->setAttribute(Qt::WA_DeleteOnClose); 
-    dialog->show();
+    QFile f(jsonpath);
+
+    if (f.open(QIODevice::ReadOnly)) {
+        QJsonDocument doc = QJsonDocument::fromJson(f.readAll());
+        f.close();
+
+        QJsonObject obj = doc.object();
+        QJsonArray designArr = obj["src_files"].toArray();
+        QJsonArray testbenchArr = obj["testbench_files"].toArray();
+
+        designArrayLength = designArr.size();
+        testbenchArrayLength = testbenchArr.size();
+
+        for (int makepath = 0; makepath < testbenchArrayLength; makepath++ ){
+            QString quotedFileName = testbenchArr[makepath].toString();
+
+            if (quotedFileName.startsWith('"') && quotedFileName.endsWith('"') && quotedFileName.length() >= 2) {
+                quotedFileName = quotedFileName.mid(1, quotedFileName.length() - 2);
+            }
+            QString makingpath = script_path + quotedFileName;
+            
+            qDebug() << makingpath;
+            arguments << makingpath;
+        }
+
+        for (int makepath = 0; makepath < designArrayLength; makepath++ ){
+            QString quotedFileName = designArr[makepath].toString();
+
+            if (quotedFileName.startsWith('"') && quotedFileName.endsWith('"') && quotedFileName.length() >= 2) {
+                quotedFileName = quotedFileName.mid(1, quotedFileName.length() - 2);
+            }
+            QString makingpath = script_path + quotedFileName;
+            
+            qDebug() << makingpath;
+            arguments << makingpath;
+        }
+    }
+
+    if (designArrayLength == 0 && testbenchArrayLength == 0){
+        QMessageBox::warning(this, "No Main File Exists","Right click on the file and choose select main file before running the iVerilog");
+    } else {
+        qDebug() << "running the program";
+        TerminalDialog *dialog = new TerminalDialog(program, arguments, this);
+        dialog->setModal(false); 
+        dialog->setAttribute(Qt::WA_DeleteOnClose); 
+        dialog->show();
+    }
 }
 
 void CentralWidget::openVcdViewer()

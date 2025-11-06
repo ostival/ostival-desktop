@@ -35,14 +35,15 @@ public slots:
 
 private:
     QTextEdit *OstivalTextEdit;
-    QPushButton *saveButton;
     QString currentFilePath;
-    QPushButton *schematicButton;
+    QSyntaxHighlighter *currentHighlighter = nullptr;
     DrawSchematic *schematicWindow = nullptr;
+    QPushButton *saveButton;
+    QPushButton *schematicButton;
     QPushButton *terminalButton;
     QPushButton *vcdButton;
-    QSyntaxHighlighter *currentHighlighter = nullptr;
     QPushButton *iverilogButton;
+    QPushButton *vvpButton;
 
 };
 
