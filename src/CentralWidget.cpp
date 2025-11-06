@@ -15,6 +15,7 @@ Team Ostival (hello@ostival.org)
 #include <QMessageBox>
 #include <QJsonObject>
 #include <QJsonArray>
+#include <QJsonDocument>
 #include "CentralWidget.h"
 #include "SyntaxHighlighter.h"
 #include "SyntaxHighlighterPython.h"

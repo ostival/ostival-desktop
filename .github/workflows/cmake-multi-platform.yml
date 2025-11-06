@@ -1,0 +1,57 @@
+name: Build Qt 6.10 App
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    name: Build on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 120
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python (for Qt installer)
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Set up Qt (Using stable LTS version)
+        uses: jurplel/install-qt-action@v4 
+        with:
+          version: '6.8.*' # Changed from '6.10.*' to the stable LTS version
+          cache: true      # Re-enabled caching for faster builds
+
+      - name: Install Qt Dependencies (Linux only)
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libgl1-mesa-dev '^libxcb.*-dev' libxkbcommon-x11-dev libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev
+
+      - name: Set up CMake
+        uses: jwlawson/actions-setup-cmake@v2
+        with:
+          cmake-version: '3.27.0'
+
+      - name: Configure project
+        run: cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
+
+      - name: Build project
+        run: cmake --build build --config Release --parallel
+
+      - name: Run tests
+        run: |
+          if [ -f "build/CTestTestfile.cmake" ]; then
+            ctest --test-dir build --output-on-failure
+          else
+            echo "No tests found. Skipping."
+          fi
+        shell: bash
