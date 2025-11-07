@@ -32,6 +32,9 @@ private slots:
     void handleClear();
     void openSettingsDialog();
 
+signals:
+    void reloadRequested();
+
 private:
     QMenuBar *OstivalmenuBar;
     QWidget *OstivalparentWindow;

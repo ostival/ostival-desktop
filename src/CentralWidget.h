@@ -27,6 +27,7 @@ private slots:
     void saveText();
     void launchTerminal();
     void launchTerminal1();
+    void launchTerminal2();
     void openVcdViewer();
 
 public slots:

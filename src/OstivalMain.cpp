@@ -72,6 +72,7 @@ int main(int argc, char *argv[]) {
     }
 
     if(project_file.checkFile()){
+        projectFile = projectPath + "/" + projectName + "/" + projectName + ".ostival";
         qDebug() << "Project File Exists\n";
     } else {
         qDebug() << "Project File does not Exists, maybe someone deleted the file\n";
@@ -79,7 +80,7 @@ int main(int argc, char *argv[]) {
         if (dialog.exec() == QDialog::Accepted) {
             projectName = dialog.getProjectName();                      //Project path is the main directory for the project.
             projectPath = dialog.getProjectPath();                      //Project name is the identifier for the project.
-            // TempFiles::createTempFile(projectName,projectPath);         //This needs to be update with -> update temp file with latest file path and name
+            TempFiles::createTempFile(projectName,projectPath);         //This needs to be update with -> update temp file with latest file path and name
             project_file.createInitialfile();                           //Create Project Initial file.
         } else {
             qDebug() << "Cancelled Pressed\n";

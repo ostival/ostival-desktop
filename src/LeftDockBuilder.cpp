@@ -21,6 +21,7 @@ Team Ostival (hello@ostival.org)
 #include <QMenu>
 #include <QAction>
 #include "LeftDockBuilder.h"
+#include "TempFiles.h"
 #include "config.h"
 
 
@@ -65,13 +66,13 @@ LeftDockBuilder::LeftDockBuilder(QMainWindow *mainWindow, QObject *parent)
     QListWidget *listWidget2 = new QListWidget;                 // Python Files
     listWidget2->setStyleSheet(MODERN_LIST_STYLE);
 
-    QString jsonpath = projectPath + "/" + projectName + "/" + projectName + ".ostival";
+    // QString jsonpath = projectPath + "/" + projectName + "/" + projectName + ".ostival";
 
     // To load src_files from JSON into the list
-    auto updateListFromJson = [listWidget, listWidget1, listWidget2, jsonpath]() {
-        QFile f(jsonpath);
+    auto updateListFromJson = [listWidget, listWidget1, listWidget2]() {
+        QFile f(projectFile);
         if (!f.open(QIODevice::ReadOnly)) {
-            qWarning() << "Can't open JSON file:" << jsonpath << f.errorString();
+            qWarning() << "Can't open JSON file:" << projectFile << f.errorString();
             listWidget->clear();
             return;
         }
@@ -106,7 +107,9 @@ LeftDockBuilder::LeftDockBuilder(QMainWindow *mainWindow, QObject *parent)
 
     // Watch JSON for changes
     QFileSystemWatcher *watcher = new QFileSystemWatcher(this);
-    watcher->addPath(jsonpath);
+    watcher->addPath(projectFile);
+    QString anotherPath = TempFiles::getTempFilePath();
+    watcher->addPath(anotherPath);
     QObject::connect(watcher, &QFileSystemWatcher::fileChanged, [updateListFromJson](const QString &){
         qDebug() << "JSON file changed, updating list...";
         updateListFromJson();
@@ -159,7 +162,7 @@ LeftDockBuilder::LeftDockBuilder(QMainWindow *mainWindow, QObject *parent)
             if (file.exists() && file.remove()) {
                 qDebug() << "Deleted file:" << filePath;
 
-                QFile f(jsonpath);
+                QFile f(projectFile);
                 if (f.open(QIODevice::ReadOnly)) {
                     QJsonDocument doc = QJsonDocument::fromJson(f.readAll());
                     f.close();
@@ -209,7 +212,7 @@ LeftDockBuilder::LeftDockBuilder(QMainWindow *mainWindow, QObject *parent)
             if (file.exists() && file.remove()) {
                 qDebug() << "Deleted file:" << filePath;
 
-                QFile f(jsonpath);
+                QFile f(projectFile);
                 if (f.open(QIODevice::ReadOnly)) {
                     QJsonDocument doc = QJsonDocument::fromJson(f.readAll());
                     f.close();
@@ -259,7 +262,7 @@ LeftDockBuilder::LeftDockBuilder(QMainWindow *mainWindow, QObject *parent)
             if (file.exists() && file.remove()) {
                 qDebug() << "Deleted file:" << filePath;
 
-                QFile f(jsonpath);
+                QFile f(projectFile);
                 if (f.open(QIODevice::ReadOnly)) {
                     QJsonDocument doc = QJsonDocument::fromJson(f.readAll());
                     f.close();

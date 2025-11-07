@@ -1,5 +1,6 @@
 # Ostival Desktop
 
+![Build](https://github.com/ostival/ostival-desktop/actions/workflows/cmake-multi-platform.yml/badge.svg)
 ![License](https://img.shields.io/github/license/ostival/ostival-desktop)
 ![Language](https://img.shields.io/badge/language-C%2B%2B-blue.svg)
 ![Issues](https://img.shields.io/github/issues/ostival/ostival-desktop)
@@ -39,7 +40,7 @@ Then run the commands to build the executable file given below:
 
     make
 
-    C:\Qt\6.10\mingw_64\bin\windeployqt.exe C:\Users\username\ostival-desktop\build\Ostival.exe
+    C:\Qt\6.10.0\mingw_64\bin\windeployqt.exe C:\Users\username\ostival-desktop\build\Ostival.exe
 
     ./Ostival.exe
 ### Linux

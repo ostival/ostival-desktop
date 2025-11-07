@@ -23,22 +23,6 @@ Team Ostival (hello@ostival.org)
 #include "TerminalDialog.h"
 #include "VcdViewer.h"
 
-const QString MODERN_BUTTON_STYLE = R"(
-    QPushButton {
-        background-color: #00A9A5;
-        color: white;
-        border: none;
-        border-radius: 6px;
-        padding: 8px 16px;
-        font-size: 14px;
-    }
-    QPushButton:hover {
-        background-color: #008F8B;
-    }
-    QPushButton:pressed {
-        background-color: #006B68;
-    }
-)";
 
 CentralWidget::CentralWidget(QWidget *parent) : QWidget(parent) {
 
@@ -52,27 +36,27 @@ CentralWidget::CentralWidget(QWidget *parent) : QWidget(parent) {
     saveButton->setStyleSheet(MODERN_BUTTON_STYLE);
 
     schematicButton = new QPushButton("Open Schematic", this);
-    schematicButton->setStyleSheet("background-color: #aca634; color: white; border: none; border-radius: 4px; padding: 5px 10px; font-weight: bold;");
+    schematicButton->setStyleSheet(MODERN_BUTTON_STYLE1);
     schematicButton->setFixedHeight(36);
 
     // --- New Terminal Button ---
     terminalButton = new QPushButton("Run Python Script", this);
-    terminalButton->setStyleSheet("background-color: #4CAF50; color: white; border: none; border-radius: 4px; padding: 5px 10px; font-weight: bold;");
+    terminalButton->setStyleSheet(MODERN_BUTTON_STYLE2);
     terminalButton->setFixedHeight(36);
 
     // --- Run iVerilog ---
     iverilogButton = new QPushButton("Run iVerilog", this);
-    iverilogButton->setStyleSheet("background-color: #4CAF50; color: white; border: none; border-radius: 4px; padding: 5px 10px; font-weight: bold;");
+    iverilogButton->setStyleSheet(MODERN_BUTTON_STYLE3);
     iverilogButton->setFixedHeight(36);
 
     // --- Run VVP ---
     vvpButton = new QPushButton("run VVP", this);
-    vvpButton->setStyleSheet("background-color: #FF5555; color: white; border: none; border-radius: 4px; padding: 5px 10px; font-weight: bold;");
+    vvpButton->setStyleSheet(MODERN_BUTTON_STYLE4);
     vvpButton->setFixedHeight(36);
 
     // VCD dialog open button
     vcdButton = new QPushButton("Open VCD Viewer", this);
-    vcdButton->setStyleSheet("background-color: #FF5555; color: white; border: none; border-radius: 4px; padding: 5px 10px; font-weight: bold;");
+    vcdButton->setStyleSheet(MODERN_BUTTON_STYLE5);
     vcdButton->setFixedHeight(36);
 
     /*
@@ -84,6 +68,7 @@ CentralWidget::CentralWidget(QWidget *parent) : QWidget(parent) {
     connect(schematicButton, &QPushButton::clicked, this, &CentralWidget::openSchematicWindow);
     connect(terminalButton, &QPushButton::clicked, this, &CentralWidget::launchTerminal);
     connect(iverilogButton, &QPushButton::clicked, this, &CentralWidget::launchTerminal1);
+    connect(vvpButton, &QPushButton::clicked, this, &CentralWidget::launchTerminal2);
     connect(vcdButton, &QPushButton::clicked, this, &CentralWidget::openVcdViewer);
 
     auto *mainLayout = new QVBoxLayout;
@@ -181,6 +166,7 @@ void CentralWidget::launchTerminal(){
 
     QString program;
     QString script_path;
+    QStringList arguments;
 
     script_path = projectPath + "/" + projectName + "/python_src/" + mainPythonFile;
 
@@ -190,7 +176,6 @@ void CentralWidget::launchTerminal(){
         program = "python3";
     #endif
 
-    QStringList arguments;
     arguments << script_path;
 
     if (mainPythonFile == ""){
@@ -204,16 +189,15 @@ void CentralWidget::launchTerminal(){
 }
 
 void CentralWidget::launchTerminal1(){
-
     QStringList arguments;
-
     QString program;
     QString script_path;
     QString output_path;
+    QString jsonpath;
     int designArrayLength;
     int testbenchArrayLength;
     
-    QString jsonpath = projectPath + "/" + projectName + "/" + projectName + ".ostival";
+    jsonpath = projectPath + "/" + projectName + "/" + projectName + ".ostival";
     script_path = projectPath + "/" + projectName + "/design_src/";
     output_path = projectPath + "/" + projectName + "/all_log_files/main";
 
@@ -258,6 +242,8 @@ void CentralWidget::launchTerminal1(){
             qDebug() << makingpath;
             arguments << makingpath;
         }
+    } else {
+        QMessageBox::warning(this, "No Main File Exists","Unable to read the file");
     }
 
     if (designArrayLength == 0 && testbenchArrayLength == 0){
@@ -268,6 +254,25 @@ void CentralWidget::launchTerminal1(){
         dialog->setModal(false); 
         dialog->setAttribute(Qt::WA_DeleteOnClose); 
         dialog->show();
+    }
+}
+
+void CentralWidget::launchTerminal2(){
+    QString program;
+    QString file_path;
+    QStringList arguments;
+
+    file_path = projectPath + "/" + projectName + "/all_log_files/main";
+    program = "vvp";
+    arguments << file_path;
+
+    if (QFile::exists(file_path)){
+        TerminalDialog *dialog = new TerminalDialog(program, arguments, this);
+        dialog->setModal(false); 
+        dialog->setAttribute(Qt::WA_DeleteOnClose); 
+        dialog->show();
+    } else {
+        QMessageBox::warning(this, "No Main File Exists","The is no output form iVerilog, either compile the project or fix the error if there are some");
     }
 }
 

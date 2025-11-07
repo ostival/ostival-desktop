@@ -1,4 +1,4 @@
-name: Build Qt 6.10 App
+name: Ostival Desktop
 
 on:
   push:

@@ -14,4 +14,5 @@ QString projectPath = "";
 QString mainDesignFile = "";
 QString mainTestbenchFile = "";
 QString mainPythonFile = "";
+QString projectFile = "";
 QString defaultSyntax = "verilog";

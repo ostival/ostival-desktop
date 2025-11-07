@@ -20,6 +20,9 @@ Team Ostival (hello@ostival.org)
 #include <QJsonObject>
 #include <QJsonArray>
 #include "FileMenuBuilder.h"
+#include "InitialDialog.h"
+#include "TempFiles.h"
+#include "ProjectFileHandler.h"
 #include "config.h"
 
 FileMenuBuilder::FileMenuBuilder(QMenuBar *menuBar, QWidget *parentWindow, LeftDockBuilder *leftDock, RightDockBuilder *rightDock, QObject *parent)
@@ -27,15 +30,11 @@ FileMenuBuilder::FileMenuBuilder(QMenuBar *menuBar, QWidget *parentWindow, LeftD
 {
     QMenu *fileMenu = OstivalmenuBar->addMenu("File");
 
-    fileMenu->addSeparator();
-    QAction *openAction = fileMenu->addAction("Open");
+    QAction *openAction = fileMenu->addAction("Open Project");
     connect(openAction, &QAction::triggered, this, &FileMenuBuilder::onOpenFile);
 
-    QAction *openFolderAction = fileMenu->addAction("Open Project");
-
-    connect(openFolderAction, &QAction::triggered, this, &FileMenuBuilder::onOpenFolder);
-    QAction *createAction = fileMenu->addAction("Create New Project");
-    
+    QAction *openFolderAction = fileMenu->addAction("Create New Project");
+    connect(openFolderAction, &QAction::triggered, this, &FileMenuBuilder::onOpenFolder);    
 
     fileMenu->addSeparator();
     QAction *createVfile = fileMenu->addAction("Create Design file");
@@ -453,27 +452,61 @@ void FileMenuBuilder::createpyFile() {
     dialog.exec();
 }
 
-void FileMenuBuilder::onOpenFile()
-{
+void FileMenuBuilder::onOpenFile(){
     QString filePath = QFileDialog::getOpenFileName(OstivalparentWindow, "Select a file");
     if (!filePath.isEmpty())
         qDebug() << "Selected file:" << filePath;
+    
+    QFileInfo fileInfo(filePath);
+    QString fileExtension = fileInfo.suffix();
+
+    if (fileExtension.compare("ostival", Qt::CaseInsensitive) == 0) {
+        projectFile = filePath;
+        qDebug() << "File has the correct .ostival extension.";
+        QDir parentDir = fileInfo.dir();
+
+        QString folderName = parentDir.dirName();
+        projectName = folderName;
+
+        if (parentDir.cdUp()) {
+        QString parentPath = parentDir.absolutePath();
+        projectPath = parentPath;
+        } else {
+            qDebug() << "Cannot go up from the current path:" << parentDir;
+        }
+        qDebug() << projectPath;
+        qDebug() << projectName;
+        TempFiles::createTempFile(projectName,projectPath);
+        emit reloadRequested();
+        QMessageBox::about(OstivalparentWindow, "Opening the project", projectName + " is opening");
+    } else {
+        qDebug() << "Error: File has an incorrect extension: " << fileExtension;
+    }
 }
 
-void FileMenuBuilder::onOpenFolder()
-{
-    QString folderPath = QFileDialog::getExistingDirectory(OstivalparentWindow, "Select a folder");
-    if (!folderPath.isEmpty())
-        qDebug() << "Selected folder:" << folderPath;
+void FileMenuBuilder::onOpenFolder(){
+    if(TempFiles::tempFileExists()){                            // If temp file exists, it means there is a history of the project. Check history and 
+        InitialDialog dialog;                                   //Initial dialog box is added so that user can choose project path and project name.
+
+        if (dialog.exec() == QDialog::Accepted) {
+            projectName = dialog.getProjectName();                      //Project path is the main directory for the project.
+            projectPath = dialog.getProjectPath();                      //Project name is the identifier for the project.
+            TempFiles::createTempFile(projectName,projectPath);         //Create temp file
+            ProjectFileHandler project_file;
+            project_file.createInitialfile();
+        } else {
+            qDebug() << "Cancel Pressed\n";
+        }
+    } else {                                                    // It there is not temp file, it means no history, and create one.
+        qDebug() << "There is not temp file, someone deleted it.\n";
+    }
 }
 
-void FileMenuBuilder::handleClear()
-{
+void FileMenuBuilder::handleClear(){
     qDebug() << "Clear triggered from FileMenuBuilder";
 }
 
-void FileMenuBuilder::openSettingsDialog()
-{
+void FileMenuBuilder::openSettingsDialog(){
     SettingsDialog dialog(OstivalparentWindow);
     dialog.exec();
 }

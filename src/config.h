@@ -30,6 +30,7 @@ Global variables to handle the project.
 */
 extern QString projectName;
 extern QString projectPath;
+extern QString projectFile;
 extern QString mainDesignFile;
 extern QString mainTestbenchFile;
 extern QString mainPythonFile;
@@ -79,5 +80,107 @@ const QString MODERN_LIST_STYLE = R"(
         background-color: #e0f7f6;
         border-radius: 4px;
     })";
+
+    const QString MODERN_BUTTON_STYLE = R"(
+        QPushButton {
+            background-color: #5c9102;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            padding: 8px 16px;
+            font-size: 14px;
+        }
+        QPushButton:hover {
+            background-color: #008F8B;
+        }
+        QPushButton:pressed {
+            background-color: #006B68;
+        }
+    )";
+
+    const QString MODERN_BUTTON_STYLE1 = R"(
+        QPushButton {
+            background-color: #A6E600;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            padding: 8px 16px;
+            font-size: 14px;
+        }
+        QPushButton:hover {
+            background-color: #008F8B;
+        }
+        QPushButton:pressed {
+            background-color: #006B68;
+        }
+    )";
+
+    const QString MODERN_BUTTON_STYLE2 = R"(
+        QPushButton {
+            background-color: #99CC00;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            padding: 8px 16px;
+            font-size: 14px;
+        }
+        QPushButton:hover {
+            background-color: #008F8B;
+        }
+        QPushButton:pressed {
+            background-color: #006B68;
+        }
+    )";
+
+    const QString MODERN_BUTTON_STYLE3 = R"(
+        QPushButton {
+            background-color: #80B300;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            padding: 8px 16px;
+            font-size: 14px;
+        }
+        QPushButton:hover {
+            background-color: #008F8B;
+        }
+        QPushButton:pressed {
+            background-color: #006B68;
+        }
+    )";
+
+    const QString MODERN_BUTTON_STYLE4 = R"(
+        QPushButton {
+            background-color: #669900;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            padding: 8px 16px;
+            font-size: 14px;
+        }
+        QPushButton:hover {
+            background-color: #008F8B;
+        }
+        QPushButton:pressed {
+            background-color: #006B68;
+        }
+    )";
+
+    const QString MODERN_BUTTON_STYLE5 = R"(
+        QPushButton {
+            background-color: #4D8000;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            padding: 8px 16px;
+            font-size: 14px;
+        }
+        QPushButton:hover {
+            background-color: #008F8B;
+        }
+        QPushButton:pressed {
+            background-color: #006B68;
+        }
+    )";
 
 #endif
