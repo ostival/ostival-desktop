@@ -30,33 +30,34 @@ CentralWidget::CentralWidget(QWidget *parent) : QWidget(parent) {
     OstivalTextEdit->setPlaceholderText("Ostival text editor...");
     OstivalTextEdit->setFont(QFont("Courier", 16));
     OstivalTextEdit->setStyleSheet("background-color: #282A36; color: #F8F8F2;");
+    OstivalTextEdit->setTabStopDistance(4 * QFontMetricsF(OstivalTextEdit->font()).horizontalAdvance(' '));
 
     saveButton = new QPushButton("Save File", this);
     saveButton->setFixedHeight(36);
     saveButton->setStyleSheet(MODERN_BUTTON_STYLE);
 
     schematicButton = new QPushButton("Open Schematic", this);
-    schematicButton->setStyleSheet(MODERN_BUTTON_STYLE1);
+    schematicButton->setStyleSheet(MODERN_BUTTON_STYLE);
     schematicButton->setFixedHeight(36);
 
     // --- New Terminal Button ---
     terminalButton = new QPushButton("Run Python Script", this);
-    terminalButton->setStyleSheet(MODERN_BUTTON_STYLE2);
+    terminalButton->setStyleSheet(MODERN_BUTTON_STYLE);
     terminalButton->setFixedHeight(36);
 
     // --- Run iVerilog ---
     iverilogButton = new QPushButton("Run iVerilog", this);
-    iverilogButton->setStyleSheet(MODERN_BUTTON_STYLE3);
+    iverilogButton->setStyleSheet(MODERN_BUTTON_STYLE);
     iverilogButton->setFixedHeight(36);
 
     // --- Run VVP ---
     vvpButton = new QPushButton("run VVP", this);
-    vvpButton->setStyleSheet(MODERN_BUTTON_STYLE4);
+    vvpButton->setStyleSheet(MODERN_BUTTON_STYLE);
     vvpButton->setFixedHeight(36);
 
     // VCD dialog open button
     vcdButton = new QPushButton("Open VCD Viewer", this);
-    vcdButton->setStyleSheet(MODERN_BUTTON_STYLE5);
+    vcdButton->setStyleSheet(MODERN_BUTTON_STYLE);
     vcdButton->setFixedHeight(36);
 
     /*
@@ -145,8 +146,7 @@ void CentralWidget::openFileInEditor(const QString &fileName)
 }
 
 
-void CentralWidget::openSchematicWindow()
-{   
+void CentralWidget::openSchematicWindow(){   
     if (schematicWindow == nullptr) {
         schematicWindow = new DrawSchematic();
         
@@ -191,14 +191,16 @@ void CentralWidget::launchTerminal(){
 void CentralWidget::launchTerminal1(){
     QStringList arguments;
     QString program;
-    QString script_path;
+    QString design_path;
+    QString testbench_path;
     QString output_path;
     QString jsonpath;
-    int designArrayLength;
-    int testbenchArrayLength;
+    int designArrayLength = 0;
+    int testbenchArrayLength = 0;
     
     jsonpath = projectPath + "/" + projectName + "/" + projectName + ".ostival";
-    script_path = projectPath + "/" + projectName + "/design_src/";
+    design_path = projectPath + "/" + projectName + "/design_src/";
+    testbench_path = projectPath + "/" + projectName + "/testbench_src/";
     output_path = projectPath + "/" + projectName + "/all_log_files/main";
 
     program = "iverilog";
@@ -225,9 +227,9 @@ void CentralWidget::launchTerminal1(){
             if (quotedFileName.startsWith('"') && quotedFileName.endsWith('"') && quotedFileName.length() >= 2) {
                 quotedFileName = quotedFileName.mid(1, quotedFileName.length() - 2);
             }
-            QString makingpath = script_path + quotedFileName;
+            QString makingpath = testbench_path + quotedFileName;
             
-            qDebug() << makingpath;
+            qDebug() << "TB path: " + makingpath;
             arguments << makingpath;
         }
 
@@ -237,9 +239,9 @@ void CentralWidget::launchTerminal1(){
             if (quotedFileName.startsWith('"') && quotedFileName.endsWith('"') && quotedFileName.length() >= 2) {
                 quotedFileName = quotedFileName.mid(1, quotedFileName.length() - 2);
             }
-            QString makingpath = script_path + quotedFileName;
+            QString makingpath = design_path + quotedFileName;
             
-            qDebug() << makingpath;
+            qDebug() << "Design path: " + makingpath;
             arguments << makingpath;
         }
     } else {
