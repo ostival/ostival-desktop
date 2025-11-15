@@ -29,10 +29,12 @@ public:
 private slots:
     void browseForPath();
     void validateAndAccept();
+    void openExistingProject();
 
 private:
     QLineEdit *nameLineEdit;
     QLineEdit *pathLineEdit;
+    QPushButton *openProjectButton;
     QPushButton *browseButton;
     QPushButton *okButton;
     QPushButton *cancelButton;

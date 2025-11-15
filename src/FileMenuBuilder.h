@@ -27,8 +27,8 @@ private slots:
     void createVerilogFile();
     void createTBFile();
     void createpyFile();
-    void onOpenFile();
-    void onOpenFolder();
+    // void onOpenFile();
+    void CreateOrOpenProject();
     void handleClear();
     void openSettingsDialog();
 

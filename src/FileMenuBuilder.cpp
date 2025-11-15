@@ -30,11 +30,8 @@ FileMenuBuilder::FileMenuBuilder(QMenuBar *menuBar, QWidget *parentWindow, LeftD
 {
     QMenu *fileMenu = OstivalmenuBar->addMenu("File");
 
-    QAction *openAction = fileMenu->addAction("Open Project");
-    connect(openAction, &QAction::triggered, this, &FileMenuBuilder::onOpenFile);
-
-    QAction *openFolderAction = fileMenu->addAction("Create New Project");
-    connect(openFolderAction, &QAction::triggered, this, &FileMenuBuilder::onOpenFolder);    
+    QAction *openFolderAction = fileMenu->addAction("Create Or Open Project");
+    connect(openFolderAction, &QAction::triggered, this, &FileMenuBuilder::CreateOrOpenProject);    
 
     fileMenu->addSeparator();
     QAction *createVfile = fileMenu->addAction("Create Design file");
@@ -452,49 +449,31 @@ void FileMenuBuilder::createpyFile() {
     dialog.exec();
 }
 
-void FileMenuBuilder::onOpenFile(){
-    QString filePath = QFileDialog::getOpenFileName(OstivalparentWindow, "Select a file");
-    if (!filePath.isEmpty())
-        qDebug() << "Selected file:" << filePath;
-    
-    QFileInfo fileInfo(filePath);
-    QString fileExtension = fileInfo.suffix();
+void FileMenuBuilder::CreateOrOpenProject(){
 
-    if (fileExtension.compare("ostival", Qt::CaseInsensitive) == 0) {
-        projectFile = filePath;
-        qDebug() << "File has the correct .ostival extension.";
-        QDir parentDir = fileInfo.dir();
-
-        QString folderName = parentDir.dirName();
-        projectName = folderName;
-
-        if (parentDir.cdUp()) {
-        QString parentPath = parentDir.absolutePath();
-        projectPath = parentPath;
-        } else {
-            qDebug() << "Cannot go up from the current path:" << parentDir;
-        }
-        qDebug() << projectPath;
-        qDebug() << projectName;
-        TempFiles::createTempFile(projectName,projectPath);
-        emit reloadRequested();
-        QMessageBox::about(OstivalparentWindow, "Opening the project", projectName + " is opening");
-    } else {
-        qDebug() << "Error: File has an incorrect extension: " << fileExtension;
-    }
-}
-
-void FileMenuBuilder::onOpenFolder(){
     if(TempFiles::tempFileExists()){                            // If temp file exists, it means there is a history of the project. Check history and 
         InitialDialog dialog;                                   //Initial dialog box is added so that user can choose project path and project name.
+        QString tempName;
+        QString tempPath;
+
+        tempName = projectName;
+        tempPath = projectPath;
+
+        projectName = "";
+        projectPath = "";
 
         if (dialog.exec() == QDialog::Accepted) {
-            projectName = dialog.getProjectName();                      //Project path is the main directory for the project.
-            projectPath = dialog.getProjectPath();                      //Project name is the identifier for the project.
-            TempFiles::createTempFile(projectName,projectPath);         //Create temp file
-            ProjectFileHandler project_file;
-            project_file.createInitialfile();
+            if(projectName == "" & projectPath == ""){
+                projectName = dialog.getProjectName();                      //Project path is the main directory for the project.
+                projectPath = dialog.getProjectPath();                      //Project name is the identifier for the project.
+                ProjectFileHandler project_file;
+                project_file.createInitialfile();
+                qDebug() << "New Project Created\n";
+            }
+            TempFiles::createTempFile(projectName,projectPath);         //Update Temp File
         } else {
+            projectName = tempName;
+            projectPath = tempPath;
             qDebug() << "Cancel Pressed\n";
         }
     } else {                                                    // It there is not temp file, it means no history, and create one.

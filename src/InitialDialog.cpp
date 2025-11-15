@@ -15,9 +15,12 @@ Team Ostival (hello@ostival.org)
 #include <QMessageBox>
 #include <QDir>
 #include <QRegularExpression>
+#include <QFileInfo>
+#include <QString>
 #include <QDebug>
 #include "InitialDialog.h"
-
+#include "config.h"
+#include "TempFiles.h"
 
 InitialDialog::InitialDialog(QWidget *parent) : QDialog(parent)
 {
@@ -32,6 +35,7 @@ InitialDialog::InitialDialog(QWidget *parent) : QDialog(parent)
     pathLineEdit->setReadOnly(true);
 
     browseButton = new QPushButton("Browse...", this);
+    openProjectButton = new QPushButton("Open Existing Project");
     okButton = new QPushButton("OK", this);
     cancelButton = new QPushButton("Cancel", this);
 
@@ -46,6 +50,7 @@ InitialDialog::InitialDialog(QWidget *parent) : QDialog(parent)
 
     QHBoxLayout *buttonLayout = new QHBoxLayout();
     buttonLayout->addStretch();
+    buttonLayout->addWidget(openProjectButton);
     buttonLayout->addWidget(okButton);
     buttonLayout->addWidget(cancelButton);
 
@@ -55,21 +60,56 @@ InitialDialog::InitialDialog(QWidget *parent) : QDialog(parent)
     setLayout(mainLayout);
 
     connect(browseButton, &QPushButton::clicked, this, &InitialDialog::browseForPath);
+    connect(openProjectButton, &QPushButton::clicked, this, &InitialDialog::openExistingProject);
     connect(okButton, &QPushButton::clicked, this, &InitialDialog::validateAndAccept);
     connect(cancelButton, &QPushButton::clicked, this, &QDialog::reject);
 }
 
-void InitialDialog::browseForPath()
-{
-    QString directory = QFileDialog::getExistingDirectory(this,tr("Select Project Path"), QDir::homePath());
+void InitialDialog::openExistingProject(){
+    QString filePath = QFileDialog::getOpenFileName(this, "Select a file");
 
+    if (filePath.isEmpty()){
+        QMessageBox::warning(this, "No File Selected", "No File Selected");
+        return;
+    }
+    
+    QFileInfo fileInfo(filePath);
+    QString fileExtension = fileInfo.suffix();
+
+    qDebug() << fileExtension;
+
+    if (fileExtension.compare("ostival", Qt::CaseInsensitive) == 0) {
+        projectFile = filePath;
+        QDir parentDir = fileInfo.dir();
+        QString folderName = parentDir.dirName();
+        projectName = folderName;
+
+        if (parentDir.cdUp()) {
+            QString parentPath = parentDir.absolutePath();
+            projectPath = parentPath;
+        } else {
+            qDebug() << "Cannot go up from the current path:" << parentDir;
+            return;
+        }
+        qDebug() << projectPath;
+        qDebug() << projectName;
+        QMessageBox::warning(this, "Opening the project", "Ostival Project: " + projectName + " is opening.");
+        accept();
+    } else {
+        qDebug() << "Error: File has an incorrect extension: " << fileExtension;
+        QMessageBox::warning(this, "File Error", "File is incorrect");
+        return;
+    }
+}
+
+void InitialDialog::browseForPath(){
+    QString directory = QFileDialog::getExistingDirectory(this,tr("Select Project Path"), QDir::homePath());
     if (!directory.isEmpty()) {
         pathLineEdit->setText(directory);
     }
 }
 
-void InitialDialog::validateAndAccept()
-{
+void InitialDialog::validateAndAccept(){
     QString projectName = getProjectName();
     QString projectPath = getProjectPath();
     QString project = projectPath + "/" + projectName;
