@@ -45,8 +45,12 @@ SyntaxHighlighterPython::SyntaxHighlighterPython(QTextDocument *parent) : QSynta
     for (const QString &word : loop_words)
         highlightingRules.append({QRegularExpression("\\b" + word + "\\b"), keywordFormat});
     
-    keywordFormat.setForeground(QColor("#42e5f4"));
+    keywordFormat.setForeground(QColor("#f442bf"));
     for (const QString &word : logic_words)
+        highlightingRules.append({QRegularExpression("\\b" + word + "\\b"), keywordFormat});
+    
+    keywordFormat.setForeground(QColor("#f44242"));
+    for (const QString &word : other_words)
         highlightingRules.append({QRegularExpression("\\b" + word + "\\b"), keywordFormat});
     
 

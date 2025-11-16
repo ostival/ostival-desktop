@@ -32,8 +32,10 @@ SyntaxHighlighter::SyntaxHighlighter(QTextDocument *parent) : QSyntaxHighlighter
     QStringList module_words = {"module", "endmodule", "input", "output", "inout"};
     QStringList pair_words = {"begin", "end", "if", "else", "case", "casex", "endcase"};
     QStringList connection_words = {"wire", "reg", "posedge", "negedge"};
-    QStringList compiler_words = {"`include", "`define", "`timescale"};
+    QStringList compiler_words = {"`include", "`define", "`timescale","`undef", "`ifdef", "`else","`endif", "`ifndef"};
     QStringList system_words = {"$display", "$fopen", "$fclose"};
+    QStringList behavioural_words = {"initial", "always"};
+    QStringList gate_level_words = {"and","or","not","nand","nor","xor","xnor"};
 
     keywordFormat.setFontWeight(QFont::Bold);
 
@@ -47,6 +49,14 @@ SyntaxHighlighter::SyntaxHighlighter(QTextDocument *parent) : QSyntaxHighlighter
 
     keywordFormat.setForeground(QColor("#f4d042"));
     for (const QString &word : connection_words)
+        highlightingRules.append({QRegularExpression("\\b" + word + "\\b"), keywordFormat});
+
+    keywordFormat.setForeground(QColor("#ff9646"));
+    for (const QString &word : behavioural_words)
+        highlightingRules.append({QRegularExpression("\\b" + word + "\\b"), keywordFormat});
+    
+    keywordFormat.setForeground(QColor("#ff4646"));
+    for (const QString &word : gate_level_words)
         highlightingRules.append({QRegularExpression("\\b" + word + "\\b"), keywordFormat});
     
     keywordFormat.setForeground(QColor("#eb3be8"));

@@ -21,11 +21,11 @@ TerminalDialog::TerminalDialog(const QString &program, const QStringList &argume
     outputDisplay = new QTextEdit(this);
     outputDisplay->setReadOnly(true);
 
-    outputDisplay->setStyleSheet("background-color: #000000; color: #00FF00; font-family: 'Consolas', 'Monospace'; font-size: 10pt; border: none; padding: 10px;");
+    outputDisplay->setStyleSheet("background-color: #000000; color: #00FF00; font-family: 'Consolas', 'Monospace'; font-size: 12pt; border: none; padding: 10px;");
 
     inputLine = new QLineEdit(this);
     inputLine->setPlaceholderText("Type your input and press Enter...");
-    inputLine->setStyleSheet("background-color: #2c2c2c; color: #ffffff; border: 1px solid #444444; border-radius: 4px; padding: 8px; font-size: 10pt;");
+    inputLine->setStyleSheet("background-color: #2c2c2c; color: #ffffff; border: 1px solid #444444; border-radius: 4px; padding: 12px; font-size: 10pt;");
 
     QVBoxLayout *mainLayout = new QVBoxLayout(this);
     mainLayout->addWidget(outputDisplay);
