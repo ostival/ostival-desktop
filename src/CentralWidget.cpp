@@ -51,7 +51,7 @@ CentralWidget::CentralWidget(QWidget *parent) : QWidget(parent) {
     iverilogButton->setFixedHeight(36);
 
     // --- Run VVP ---
-    vvpButton = new QPushButton("run VVP", this);
+    vvpButton = new QPushButton("Run VVP", this);
     vvpButton->setStyleSheet(MODERN_BUTTON_STYLE);
     vvpButton->setFixedHeight(36);
 
@@ -79,8 +79,8 @@ CentralWidget::CentralWidget(QWidget *parent) : QWidget(parent) {
     buttonRowLayout->addWidget(iverilogButton);
     buttonRowLayout->addWidget(vvpButton);
     buttonRowLayout->addWidget(schematicButton);
-    buttonRowLayout->addWidget(terminalButton);
     buttonRowLayout->addWidget(vcdButton);
+    buttonRowLayout->addWidget(terminalButton);
 
     mainLayout->addWidget(OstivalTextEdit);
     mainLayout->addLayout(buttonRowLayout);

@@ -20,6 +20,7 @@ Team Ostival (hello@ostival.org)
 #include <QFileSystemWatcher>
 #include <QMenu>
 #include <QAction>
+#include <QMessageBox>
 #include "LeftDockBuilder.h"
 #include "TempFiles.h"
 #include "config.h"
@@ -65,8 +66,6 @@ LeftDockBuilder::LeftDockBuilder(QMainWindow *mainWindow, QObject *parent)
 
     QListWidget *listWidget2 = new QListWidget;                 // Python Files
     listWidget2->setStyleSheet(MODERN_LIST_STYLE);
-
-    // QString jsonpath = projectPath + "/" + projectName + "/" + projectName + ".ostival";
 
     // To load src_files from JSON into the list
     auto updateListFromJson = [listWidget, listWidget1, listWidget2]() {
@@ -150,48 +149,61 @@ LeftDockBuilder::LeftDockBuilder(QMainWindow *mainWindow, QObject *parent)
         if (!item) return;
 
         QMenu menu;
-        QAction *deleteAction = menu.addAction("Delete File");
         QAction *setMainFile = menu.addAction("Set Main File");
+        QAction *deleteAction = menu.addAction("Delete File");
         QAction *selectedAction = menu.exec(listWidget->viewport()->mapToGlobal(pos));
 
         if (selectedAction == deleteAction) {
+            // Confirmation Dialog to delte the file
             QString fileName = item->text();
-            QString filePath = projectPath + "/" + projectName + "/design_src/" + fileName;
+            QMessageBox msgBox;
+            msgBox.setText("Confirm Deletion");
+            msgBox.setInformativeText(QString("Are you sure you want to delete the file %1?").arg(fileName));
+            msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
+            msgBox.setDefaultButton(QMessageBox::No);
 
-            QFile file(filePath);
-            if (file.exists() && file.remove()) {
-                qDebug() << "Deleted file:" << filePath;
+            // Show the dialog and check the user's response
+            if (msgBox.exec() == QMessageBox::Yes) {
+                QString filePath = projectPath + "/" + projectName + "/design_src/" + fileName;
 
-                QFile f(projectFile);
-                if (f.open(QIODevice::ReadOnly)) {
-                    QJsonDocument doc = QJsonDocument::fromJson(f.readAll());
-                    f.close();
+                QFile file(filePath);
+                if (file.exists() && file.remove()) {
+                    qDebug() << "Deleted file:" << filePath;
 
-                    QJsonObject obj = doc.object();
-                    QJsonArray arr = obj["src_files"].toArray();
-                    QJsonArray newArr;
-                    for (auto v : arr) {
-                        if (v.toString() != fileName) newArr.append(v.toString());
-                    }
-                    obj["src_files"] = newArr;
-
-                    if (f.open(QIODevice::WriteOnly | QIODevice::Truncate)) {
-                        f.write(QJsonDocument(obj).toJson(QJsonDocument::Indented));
+                    QFile f(projectFile);
+                    if (f.open(QIODevice::ReadOnly)) {
+                        QJsonDocument doc = QJsonDocument::fromJson(f.readAll());
                         f.close();
-                    }
-                }
 
-                // Remove from list
-                delete listWidget->takeItem(listWidget->row(item));
+                        QJsonObject obj = doc.object();
+                        QJsonArray arr = obj["src_files"].toArray();
+                        QJsonArray newArr;
+                        for (auto v : arr) {
+                            if (v.toString() != fileName) newArr.append(v.toString());
+                        }
+                        obj["src_files"] = newArr;
+
+                        if (f.open(QIODevice::WriteOnly | QIODevice::Truncate)) {
+                            f.write(QJsonDocument(obj).toJson(QJsonDocument::Indented));
+                            f.close();
+                        }
+                    }
+
+                    // Remove from list
+                    delete listWidget->takeItem(listWidget->row(item));
+                } else {
+                    qWarning() << "Failed to delete file:" << filePath;
+                }
             } else {
-                qWarning() << "Failed to delete file:" << filePath;
+                // User clicked No or closed the dialog. Do nothing.
+                qDebug() << "Deletion of file:" << fileName << "cancelled by user.";
             }
         } else if (selectedAction == setMainFile) {
             QString fileName = item->text();
             mainDesignFile = fileName;
             qDebug() << "item selected as main file" << fileName;
         } else {
-            qWarning() << "Something is missing";
+            qWarning() << "Something is missing or action was cancelled";
         }
     });
 

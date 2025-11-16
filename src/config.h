@@ -41,43 +41,38 @@ User Interface constants
 */
 const QString MODERN_TITLE_STYLE = R"(
         QLabel {
-            background-color: #ff8808;
-            color: white;
+            background-color: #2caa8d;
+            color: #e1e1e1;
             border-radius: 12px;
             font-size: 16px;
-            font-weight: 600;
-            padding-left: 10px;
-            padding-right: 10px;
+            font-weight: 400;
         }
     )";
 ;
 
 const QString MODERN_LIST_STYLE = R"(
     QListWidget {
-        background-color: #f5f7fa;
-        color: #5C4033; /* Brown text */
-        border: 1px solid #d0d0d0;
+        background-color: #effffc;
+        color: #000000;
+        border: 1px solid #610707;
         border-radius: 6px;
-        padding: 4px;
+        padding: 2px;
         font-size: 14px;
-        outline: 0;
     }
 
     QListWidget::item {
-        padding: 8px 12px;
+        padding: 4px 3px;
         border: none;
         margin: 2px 0;
-        color: #5C4033;
     }
 
     QListWidget::item:selected {
         background-color: #00A9A5;
-        color: white;
         border-radius: 4px;
     }
 
     QListWidget::item:hover {
-        background-color: #e0f7f6;
+        background-color: #3292ca;
         border-radius: 4px;
     })";
 
@@ -100,7 +95,7 @@ const QString MODERN_LIST_STYLE = R"(
 
     const QString MODERN_BUTTON_STYLE1 = R"(
         QPushButton {
-            background-color: #A6E600;
+            background-color: #00A9A5;
             color: white;
             border: none;
             border-radius: 6px;

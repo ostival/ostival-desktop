@@ -13,23 +13,8 @@ Team Ostival (hello@ostival.org)
 #include <QListWidget>
 #include <QVBoxLayout>
 #include "RightDockBuilder.h"
+#include "config.h"
 
-const QString MODERN_BUTTON_STYLE = R"(
-    QPushButton {
-        background-color: #00A9A5;
-        color: white;
-        border: none;
-        border-radius: 6px;
-        padding: 8px 16px;
-        font-size: 14px;
-    }
-    QPushButton:hover {
-        background-color: #008F8B;
-    }
-    QPushButton:pressed {
-        background-color: #006B68;
-    }
-)";
 
 RightDockBuilder::RightDockBuilder(QMainWindow *mainWindow, QObject *parent)
     : QObject(parent), OstivalmainWindow(mainWindow)
@@ -50,45 +35,40 @@ RightDockBuilder::RightDockBuilder(QMainWindow *mainWindow, QObject *parent)
 
     QLabel *header = new QLabel("Current Project Status");
     header->setAlignment(Qt::AlignCenter);
-    header->setFixedHeight(40);
-    header->setStyleSheet(R"(
-        QLabel {
-            background-color: #f877ff;
-            color: white;
-            border-radius: 12px;
-            font-size: 16px;
-            font-weight: 600;
-            padding-left: 10px;
-            padding-right: 10px;
-        }
-    )");
+    header->setFixedHeight(20);
+    header->setStyleSheet(MODERN_TITLE_STYLE);
+
+    QLabel *header1 = new QLabel("Constraints Files");
+    header1->setAlignment(Qt::AlignCenter);
+    header1->setFixedHeight(20);
+    header1->setStyleSheet(MODERN_TITLE_STYLE);
 
     QListWidget *listWidget = new QListWidget;
+    listWidget->setStyleSheet(MODERN_LIST_STYLE);
     listWidget->addItems({"Tool: ", "Status: ", "Technology: "});
 
-    QPushButton *refreshButton = new QPushButton("Refresh");
-    refreshButton->setStyleSheet(MODERN_BUTTON_STYLE);
+    QListWidget *listWidget1 = new QListWidget;
+    listWidget1->setStyleSheet(MODERN_LIST_STYLE);
 
-    QPushButton *compileButton = new QPushButton("Compile");
-    compileButton->setStyleSheet(MODERN_BUTTON_STYLE);
+    QPushButton *refreshButton = new QPushButton("Pre-Synthesis Check");
+    refreshButton->setStyleSheet(MODERN_BUTTON_STYLE1);
 
-    QPushButton *simulateButton = new QPushButton("Simulate");
-    simulateButton->setStyleSheet(MODERN_BUTTON_STYLE);
+    QPushButton *synthesisButton = new QPushButton("Run Synthesis");
+    synthesisButton->setStyleSheet(MODERN_BUTTON_STYLE1);
 
-    QPushButton *synthesisButton = new QPushButton("Synthesis");
-    synthesisButton->setStyleSheet(MODERN_BUTTON_STYLE);
+    QPushButton *implementationButton = new QPushButton("Run PnR");
+    implementationButton->setStyleSheet(MODERN_BUTTON_STYLE1);
 
-    QPushButton *implementationButton = new QPushButton("PnR");
-    implementationButton->setStyleSheet(MODERN_BUTTON_STYLE);
-
-    QPushButton *layoutButton = new QPushButton("Generate Layout");
-    layoutButton->setStyleSheet(MODERN_BUTTON_STYLE);
+    QPushButton *layoutButton = new QPushButton("Generate Layout/Bitstream");
+    layoutButton->setStyleSheet(MODERN_BUTTON_STYLE1);
 
     layout->addWidget(header);
     layout->addWidget(listWidget);
+    layout->addWidget(header1);
+    layout->addWidget(listWidget1);
     layout->addWidget(refreshButton);
-    layout->addWidget(compileButton);
-    layout->addWidget(simulateButton);
+    // layout->addWidget(compileButton);
+    // layout->addWidget(simulateButton);
     layout->addWidget(synthesisButton);
     layout->addWidget(implementationButton);
     layout->addWidget(layoutButton);
