@@ -18,14 +18,31 @@ Team Ostival (hello@ostival.org)
 #include <QFileInfo>
 #include <QString>
 #include <QDebug>
+#include <QLabel>
+#include <QPixmap>
 #include "InitialDialog.h"
 #include "config.h"
 #include "TempFiles.h"
 
-InitialDialog::InitialDialog(QWidget *parent) : QDialog(parent)
-{
-    setWindowTitle("Ostival Create New Project");
-    setFixedSize(450, 150);
+InitialDialog::InitialDialog(QWidget *parent) : QDialog(parent){
+
+    setWindowTitle("Open Or Create New Project");
+    this->setStyleSheet(MODERN_LANDING_DIALOG_STYLE);
+
+    QLabel *logoLabel = new QLabel(this);
+    const QString LOGO_RESOURCE_PATH = ":/resources/ostival-logo.png";
+    const int LOGO_SIZE = 130;
+
+    QPixmap logoPixmap(LOGO_RESOURCE_PATH);
+    
+    if (!logoPixmap.isNull()) {
+        QPixmap scaledPixmap = logoPixmap.scaled(LOGO_SIZE, LOGO_SIZE,Qt::KeepAspectRatio, Qt::SmoothTransformation);
+        logoLabel->setPixmap(scaledPixmap);
+        logoLabel->setAlignment(Qt::AlignCenter);
+    } else {
+        logoLabel->setText("Ostival");
+        logoLabel->setAlignment(Qt::AlignCenter);
+    }
 
     nameLineEdit = new QLineEdit(this);
     nameLineEdit->setPlaceholderText("Enter project name");
@@ -36,7 +53,7 @@ InitialDialog::InitialDialog(QWidget *parent) : QDialog(parent)
 
     browseButton = new QPushButton("Browse...", this);
     openProjectButton = new QPushButton("Open Existing Project");
-    okButton = new QPushButton("OK", this);
+    okButton = new QPushButton("Create", this);
     cancelButton = new QPushButton("Cancel", this);
 
     QHBoxLayout *pathLayout = new QHBoxLayout();
@@ -45,8 +62,8 @@ InitialDialog::InitialDialog(QWidget *parent) : QDialog(parent)
     pathLayout->addWidget(browseButton);
 
     QFormLayout *formLayout = new QFormLayout();
-    formLayout->addRow("Project Name:", nameLineEdit);
-    formLayout->addRow("Project Path:", pathLayout);
+    formLayout->addRow("Name This Project:", nameLineEdit);
+    formLayout->addRow("Choose Location:", pathLayout);
 
     QHBoxLayout *buttonLayout = new QHBoxLayout();
     buttonLayout->addStretch();
@@ -55,6 +72,8 @@ InitialDialog::InitialDialog(QWidget *parent) : QDialog(parent)
     buttonLayout->addWidget(cancelButton);
 
     QVBoxLayout *mainLayout = new QVBoxLayout(this);
+    mainLayout->addWidget(logoLabel, 0, Qt::AlignCenter);
+    mainLayout->addSpacing(12);
     mainLayout->addLayout(formLayout);
     mainLayout->addLayout(buttonLayout);
     setLayout(mainLayout);

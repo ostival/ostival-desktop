@@ -6,13 +6,13 @@
 # ---------------------------------
 
 cmake_minimum_required(VERSION 3.16)
-project(Ostival)
-
+project(Ostival LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 17)
 
 find_package(Qt6 REQUIRED COMPONENTS Widgets)
 
 set(CMAKE_AUTOMOC ON)
+set(CMAKE_AUTORCC ON)
 
 add_executable(Ostival
     src/OstivalMain.cpp
@@ -36,6 +36,7 @@ add_executable(Ostival
     src/DrawSchematic.cpp
     src/TerminalDialog.cpp
     src/VcdViewer.cpp
+    src/app_resources.qrc
 )
 
 target_include_directories(Ostival PRIVATE ${CMAKE_SOURCE_DIR})

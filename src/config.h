@@ -39,6 +39,41 @@ extern QString defaultSyntax;
 /*
 User Interface constants
 */
+const QString MODERN_LANDING_DIALOG_STYLE = "QDialog {"
+            "background-color: #2b2b2b;"
+            "color: #f0f0f0;"
+            "border: 1px solid #555555;"
+        "}"
+        "QLineEdit {"
+            "background-color: #3c3c3c;"
+            "border: 1px solid #555555;"
+            "color: #f0f0f0;"
+        "}"
+        "QPushButton {"
+            "background-color: #00A9A5;"
+            "color: #ffffff;"
+            "border: 1px solid #00A9A5;"
+            "border-radius: 8px;"
+            "padding: 6px 8px;"
+        "}"
+
+        "QPushButton:hover {"
+            "background-color: #008785;"
+            "border: 1px solid #008785;"
+        "}"
+
+        "QPushButton:pressed {"
+            "background-color: #01d0cd;"
+        "}"
+        "QLabel {"
+            "color: #f0f0f0;"
+        "}"
+        "QLineEdit {"
+            "border-radius: 5px;"
+            "border: 1px solid gray;"
+        "}";
+
+
 const QString MODERN_TITLE_STYLE = R"(
         QLabel {
             background-color: #2caa8d;
@@ -48,7 +83,6 @@ const QString MODERN_TITLE_STYLE = R"(
             font-weight: 400;
         }
     )";
-;
 
 const QString MODERN_LIST_STYLE = R"(
     QListWidget {

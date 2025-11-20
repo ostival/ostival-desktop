@@ -1,0 +1,5 @@
+<!DOCTYPE RCC><RCC version="1.0">
+<qresource prefix="/">
+    <file>../resources/ostival-logo.png</file>
+</qresource>
+</RCC>
